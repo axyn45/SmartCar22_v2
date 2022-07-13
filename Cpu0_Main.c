@@ -132,7 +132,7 @@ int core0_main (void)
  //  LQ_GPT_4mini512TFT();
    // Test_CAMERA();
 //    TestEncoder();
-    LQ_Atom_Motor_8chPWM();
+//    LQ_Atom_Motor_8chPWM();
     while(1)//Ö÷Ñ­»·
     {
 
