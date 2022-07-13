@@ -95,7 +95,7 @@ void OutInGarage (uint8 inout, uint8 lr)//  inout 为1 入库  lr为1  右
             /*ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);  //继续前进
             ATOM_PWM_SetDuty(ATOMPWM4, 2000, 12500);
             */
-            MotorCtrl4w(2000,2000,2000,2000);//2000
+            MotorCtrl4w(1500,1500,1500,1500);//2000
 
             while (Feed_flag < ps + 2000) // 继续前进大约35cm
             {
@@ -104,14 +104,14 @@ void OutInGarage (uint8 inout, uint8 lr)//  inout 为1 入库  lr为1  右
             /*ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);
             ATOM_PWM_SetDuty(ATOMPWM4, 1000, 12500);      // 反转刹车
             */
-            MotorCtrl4w(1000,1000,1000,1000);//2000
+            MotorCtrl4w(1500,1500,1500,1500);//2000
 
             delayms(300);  //刹车时间可以整定
             ps = Feed_flag;
             DJ_PID(5);    // 舵机向左打死
 //            ATOM_PWM_SetDuty(ATOMPWM5, 2000, 12500);  //后退
 //            ATOM_PWM_SetDuty(ATOMPWM4, 0, 12500);
-            MotorCtrl4w(2000,2000,2000,2000);//2000
+            MotorCtrl4w(1500,1500,1500,1500);//2000
 
             while (Feed_flag > ps - 2000) // 从停车位出库，大约要512编码器2000个脉冲，龙邱512带方向编码器1米5790个脉冲
             {
@@ -121,7 +121,7 @@ void OutInGarage (uint8 inout, uint8 lr)//  inout 为1 入库  lr为1  右
             DJ_PID(40);  // 回中倒车
 //            ATOM_PWM_SetDuty(ATOMPWM5, 2000, 12500);  //后退
 //            ATOM_PWM_SetDuty(ATOMPWM4, 0, 12500);
-            MotorCtrl4w(2000,2000,2000,2000);//2000
+            MotorCtrl4w(1500,1500,1500,1500);//2000
 
             while (Feed_flag > ps - 800)  // 小车后退为正值，并累加到出库为止
             {
@@ -129,12 +129,12 @@ void OutInGarage (uint8 inout, uint8 lr)//  inout 为1 入库  lr为1  右
             }
 //            ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);
 //            ATOM_PWM_SetDuty(ATOMPWM4, 1000, 12500);      // 反转刹车
-            MotorCtrl4w(1000,1000,1000,1000);//2000
+            MotorCtrl4w(1500,1500,1500,1500);//2000
 
             delayms(300);                // 电机反转刹车，防止滑出赛道，时间根据速度调整
 //            ATOM_PWM_SetDuty(ATOMPWM5, 1000, 12500);
 //            ATOM_PWM_SetDuty(ATOMPWM4, 1000, 12500);      // 停车
-            MotorCtrl4w(1000,1000,1000,1000);//2000
+            MotorCtrl4w(1500,1500,1500,1500);//2000
 
             while (1);                   // 入库完毕，永久停车
         }
@@ -145,7 +145,7 @@ void OutInGarage (uint8 inout, uint8 lr)//  inout 为1 入库  lr为1  右
             DJ_PID(40);    // 直行大约10cm
 //            ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);  //继续前进
 //            ATOM_PWM_SetDuty(ATOMPWM4, 2000, 12500);
-            MotorCtrl4w(2000,2000,2000,2000);//2000
+            MotorCtrl4w(1500,1500,1500,1500);//2000
 
             while (Feed_flag < ps + 600)
             {
@@ -156,7 +156,7 @@ void OutInGarage (uint8 inout, uint8 lr)//  inout 为1 入库  lr为1  右
             DJ_PID(5);     // 舵机向左打死为出库做准备
 //            ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);  //继续前进
 //            ATOM_PWM_SetDuty(ATOMPWM4, 3000, 12500);
-            MotorCtrl4w(2000,2000,2000,2000);//2000
+            MotorCtrl4w(1500,1500,1500,1500);//2000
 
             while (Feed_flag < ps + 1200)
             {

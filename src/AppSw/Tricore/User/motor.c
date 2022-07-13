@@ -1,4 +1,5 @@
 #include<motor.h>
+#include "..\Driver\include.h"//各个模块的头文件
 /************************速度控制*******************************/
 sint8  speed_need=0;                   //目标速度
 sint8  speed_need_Boost=0;             //目标高速
@@ -61,63 +62,6 @@ void FEED_COUNT(void)
 }
 
 
-
-/*******************转速PID控制函数*************************/
-void speed_PID(sint8 speed_in)
-{
-    if(Lleft2<10&&Lright2<10)  //保护，出赛道停车
-        {
-           speed_in=0;
-           speed_out=0;
-        }
-
-  signed int static last_error_1;      //上次偏差
-  signed int static last_error_2;      //上上次偏差
-
-  speed_error=(float)speed_in-Feed_speed;      //计算转速误差
-  speed_out +=Speed_P*(speed_error-last_error_1)+Speed_I*speed_error+ Speed_D*(speed_error-2*last_error_1+last_error_2);
-
-  last_error_2=last_error_1;            //记录上上次误差
-  last_error_1=speed_error;             //记录上次误差
-
-  /*******输出限幅 危险，误动！*********/
-  if(speed_out>2500)
-     speed_out=2500;
-   if(speed_out<-2500)
-     speed_out=-2500;
-
-
-   if(speed_out<0)
-   {
-       ATOM_PWM_SetDuty(ATOMPWM5, -speed_out, 12500);//驱动电机反转
-       ATOM_PWM_SetDuty(ATOMPWM4, 0, 12500);
-   }
-   else
-   {
-     ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);//驱动电机正转
-     ATOM_PWM_SetDuty(ATOMPWM4, speed_out, 12500);
-   }
-
-}
-
-
-#include<LQ_GPIO.h>
-//#include"motor.h"
-void MotorInit (void)
-{
-    ATOM_PWM_InitConfig(MOTOR1_P, 0, MOTOR_FREQUENCY);
-    ATOM_PWM_InitConfig(MOTOR2_P, 0, MOTOR_FREQUENCY);
-    ATOM_PWM_InitConfig(MOTOR3_P, 0, MOTOR_FREQUENCY);
-    ATOM_PWM_InitConfig(MOTOR4_P, 0, MOTOR_FREQUENCY);
-
-
-    PIN_InitConfig(P32_4, PIN_MODE_OUTPUT, 0);
-    PIN_InitConfig(P22_3, PIN_MODE_OUTPUT, 0);
-    PIN_InitConfig(P21_5, PIN_MODE_OUTPUT, 0);
-    PIN_InitConfig(P21_3, PIN_MODE_OUTPUT, 0);
-
-}
-
 void MotorCtrl4w(sint32 motor1, sint32 motor2,sint32 motor3, sint32 motor4)
 {
     if (motor1 > 0)
@@ -162,6 +106,61 @@ void MotorCtrl4w(sint32 motor1, sint32 motor2,sint32 motor3, sint32 motor4)
            ATOM_PWM_SetDuty(MOTOR4_P, MOTOR_FREQUENCY+motor4, MOTOR_FREQUENCY);
            IfxPort_setPinHigh(&MODULE_P21, 3);
        }
+}
+
+
+/*******************转速PID控制函数*************************/
+void speed_PID(sint8 speed_in)
+{
+    if(Lleft2<10&&Lright2<10)  //保护，出赛道停车
+        {
+           speed_in=0;
+           speed_out=0;
+        }
+
+  signed int static last_error_1;      //上次偏差
+  signed int static last_error_2;      //上上次偏差
+
+  speed_error=(float)speed_in-Feed_speed;      //计算转速误差
+  speed_out +=Speed_P*(speed_error-last_error_1)+Speed_I*speed_error+ Speed_D*(speed_error-2*last_error_1+last_error_2);
+
+  last_error_2=last_error_1;            //记录上上次误差
+  last_error_1=speed_error;             //记录上次误差
+
+  /*******输出限幅 危险，误动！*********/
+  if(speed_out>1500)
+     speed_out=1500;
+   if(speed_out<-1500)
+     speed_out=-1500;
+
+
+   if(speed_out<0)
+   {
+       MotorCtrl4w(-speed_out,-speed_out,-speed_out,-speed_out);
+   }
+   else
+   {
+       MotorCtrl4w(speed_out,speed_out,speed_out,speed_out);
+   }
+
+}
+
+
+#include<LQ_GPIO.h>
+//#include"motor.h"
+void MotorInit (void)
+{
+    ATOM_PWM_InitConfig(MOTOR1_P, 0, MOTOR_FREQUENCY);
+    ATOM_PWM_InitConfig(MOTOR2_P, 0, MOTOR_FREQUENCY);
+    ATOM_PWM_InitConfig(MOTOR3_P, 0, MOTOR_FREQUENCY);
+    ATOM_PWM_InitConfig(MOTOR4_P, 0, MOTOR_FREQUENCY);
+
+
+    PIN_InitConfig(P32_4, PIN_MODE_OUTPUT, 0);
+    PIN_InitConfig(P22_3, PIN_MODE_OUTPUT, 0);
+    PIN_InitConfig(P21_5, PIN_MODE_OUTPUT, 0);
+    PIN_InitConfig(P21_3, PIN_MODE_OUTPUT, 0);
+
 }
 
 

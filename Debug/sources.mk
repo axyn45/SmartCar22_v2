@@ -62,7 +62,6 @@ Libraries/iLLD/TC26B/Tricore/Gtm/Tom/Timer \
 Libraries/iLLD/TC26B/Tricore/Gtm/Trig \
 Libraries/iLLD/TC26B/Tricore/I2c/I2c \
 Libraries/iLLD/TC26B/Tricore/I2c/Std \
-Libraries/iLLD/TC26B/Tricore/Mtu/Std \
 Libraries/iLLD/TC26B/Tricore/Port/Io \
 Libraries/iLLD/TC26B/Tricore/Port/Std \
 Libraries/iLLD/TC26B/Tricore/Qspi/SpiMaster \

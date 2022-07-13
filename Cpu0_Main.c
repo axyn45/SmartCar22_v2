@@ -28,10 +28,10 @@ volatile char mutexCpu0TFTIsOk=0;
 void CAR_Drive_duty(void)           //执行机构综合控制函数
 {
 
-
-  if(KEY_Read(DSW0))                //
-      DJ_PID(mid_point[25]);//正常舵机控制
-  else;
+  DJ_PID(mid_point[40]);
+//  if(KEY_Read(DSW0))  ;              //
+//      //正常舵机控制
+//  else;
 
   if(podao_flag)
       DJ_PID(mid_point[30]);
