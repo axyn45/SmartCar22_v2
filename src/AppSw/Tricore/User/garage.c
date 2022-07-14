@@ -1,151 +1,149 @@
-#include"garage.h"
+#include "garage.h"
 
-
-/*****************³µ¿â***************************************/
-void OutInGarage (uint8 inout, uint8 lr)//  inout Îª1 Èë¿â  lrÎª1  ÓÒ
+/*****************ï¿½ï¿½ï¿½ï¿½***************************************/
+void OutInGarage(uint8 inout, uint8 lr) //  inout Îª1 ï¿½ï¿½ï¿½  lrÎª1  ï¿½ï¿½
 {
     sint32 ps = 0;
     char txt[20];
     sprintf(txt, "start", Feed_speed);
-    TFTSPI_P8X16Str(0, 5, txt,u16WHITE,u16BLACK);       //×Ö·û´®ÏÔÊ¾
-    if (lr)           // 1ÓÒ³öÈë¿â
+    TFTSPI_P8X16Str(0, 5, txt, u16WHITE, u16BLACK); //ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾
+    if (lr)                                         // 1ï¿½Ò³ï¿½ï¿½ï¿½ï¿½
     {
-        if (inout)    // 1ÓÒÈë¿â
+        if (inout) // 1ï¿½ï¿½ï¿½ï¿½ï¿½
         {
             ps = Feed_flag;
-            MotorCtrl4w(1500,1500,1500,1500);//3000
+            MotorCtrl4w(1500, 1500, 1500, 1500); // 3000
 
             while (Feed_flag < ps + 200)
-                               {
-                                   Feed_speed=ENC_GetCounter(ENC2_InPut_P33_7);//Ç°½øÎªÕýÖµ//±àÂëÆ÷4
-                                   Feed_flag += Feed_speed;
+            {
+                Feed_speed = ENC_GetCounter(ENC2_InPut_P33_7); //Ç°ï¿½ï¿½Îªï¿½ï¿½Öµ//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½4
+                Feed_flag += Feed_speed;
+            }
 
-                              }
+            ps = Feed_flag;
+            DJ_PID(80); // Ö±ï¿½Ð´ï¿½Ô¼10cm
+            /*
+            ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);  //ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½
+            ATOM_PWM_SetDuty(ATOMPWM4, 200, 12500);
+            */
+            MotorCtrl4w(200, 200, 200, 200);
 
-                       ps = Feed_flag;
-                       DJ_PID(80);    // Ö±ÐÐ´óÔ¼10cm
-                       /*
-                       ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);  //¼ÌÐøÇ°½ø
-                       ATOM_PWM_SetDuty(ATOMPWM4, 200, 12500);
-                       */
-                       MotorCtrl4w(200,200,200,200);
+            while (Feed_flag < ps + 700)
+            {
+                Feed_speed = ENC_GetCounter(ENC2_InPut_P33_7); //Ç°ï¿½ï¿½Îªï¿½ï¿½Öµ//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½4
+                Feed_flag -= Feed_speed;
+            }
 
-                       while (Feed_flag < ps + 700)
-                       {
-                           Feed_speed=ENC_GetCounter(ENC2_InPut_P33_7);//Ç°½øÎªÕýÖµ//±àÂëÆ÷4
-                           Feed_flag -= Feed_speed;
+            /*
+                                   ATOM_PWM_SetDuty(ATOMPWM5, 1000, 12500);
+                                   ATOM_PWM_SetDuty(ATOMPWM4, 1000, 12500);
+            */
+            MotorCtrl4w(1000, 1000, 1000, 1000);
 
-                      }
-
-/*
-                       ATOM_PWM_SetDuty(ATOMPWM5, 1000, 12500);
-                       ATOM_PWM_SetDuty(ATOMPWM4, 1000, 12500);
-*/
-                       MotorCtrl4w(1000,1000,1000,1000);
-
-            while (1);                   // Èë¿âÍê±Ï£¬ÓÀ¾ÃÍ£³µ
+            while (1)
+                ; // ï¿½ï¿½ï¿½ï¿½ï¿½Ï£ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½ï¿½
         }
-        else  // 0ÓÒ³ö¿â
+        else // 0ï¿½Ò³ï¿½ï¿½ï¿½
         {
             sprintf(txt, "start1", Feed_speed);
-            TFTSPI_P8X16Str(0, 5, txt,u16WHITE,u16BLACK);       //×Ö·û´®ÏÔÊ¾
-            // 2020ÄêÐÂ¼Ó³ö¿âÔªËØ£¬´Ë´¦ÎªÃ¤×ß³ö¿â
+            TFTSPI_P8X16Str(0, 5, txt, u16WHITE, u16BLACK); //ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾
+            // 2020ï¿½ï¿½ï¿½Â¼Ó³ï¿½ï¿½ï¿½Ôªï¿½Ø£ï¿½ï¿½Ë´ï¿½ÎªÃ¤ï¿½ß³ï¿½ï¿½ï¿½
             ps = Feed_flag;
-            DJ_PID(40);    // Ö±ÐÐ´óÔ¼10cm
+            DJ_PID(40); // Ö±ï¿½Ð´ï¿½Ô¼10cm
 
-            ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);  //¼ÌÐøÇ°½ø
+            ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500); //ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½
             ATOM_PWM_SetDuty(ATOMPWM4, 1500, 12500);
 
-            MotorCtrl4w(1500,1500,1500,1500);//3000
+            MotorCtrl4w(1500, 1500, 1500, 1500); // 3000
             sprintf(txt, "start2", Feed_speed);
-            TFTSPI_P8X16Str(0, 5, txt,u16WHITE,u16BLACK);       //×Ö·û´®ÏÔÊ¾
+            TFTSPI_P8X16Str(0, 5, txt, u16WHITE, u16BLACK); //ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾
             while (Feed_flag < ps + 1400)
             {
-                MotorCtrl4w(1500,1500,1500,1500);//3000
+                MotorCtrl4w(1500, 1500, 1500, 1500); // 3000
 
                 sprintf(txt, "Feed_flag:%05d", Feed_flag);
-                TFTSPI_P8X16Str(0, 7, txt,u16WHITE,u16BLACK);
-                Feed_speed=ENC_GetCounter(ENC2_InPut_P33_7);//Ç°½øÎªÕýÖµ//±àÂëÆ÷4
+                TFTSPI_P8X16Str(0, 7, txt, u16WHITE, u16BLACK);
+                Feed_speed = ENC_GetCounter(ENC2_InPut_P33_7); //Ç°ï¿½ï¿½Îªï¿½ï¿½Öµ//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½4
                 Feed_flag += Feed_speed;
-
-           }
+            }
             sprintf(txt, "start3", Feed_speed);
-            TFTSPI_P8X16Str(0, 6, txt,u16WHITE,u16BLACK);       //×Ö·û´®ÏÔÊ¾
+            TFTSPI_P8X16Str(0, 6, txt, u16WHITE, u16BLACK); //ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾
             ps = Feed_flag;
-            DJ_PID(75);     // ¶æ»úÏòÓÒ´òËÀÎª³ö¿â×ö×¼±¸
+            DJ_PID(75); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò´ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¼ï¿½ï¿½
             /*
-            ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);  //¼ÌÐøÇ°½ø
+            ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);  //ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½
             ATOM_PWM_SetDuty(ATOMPWM4, 1500, 12500);
             */
-            MotorCtrl4w(1500,1500,1500,1500);//3000
+            MotorCtrl4w(1500, 1500, 1500, 1500); // 3000
 
             while (Feed_flag < ps + 1600)
             {
-                 Feed_speed=ENC_GetCounter(ENC2_InPut_P33_7);//Ç°½øÎªÕýÖµ//±àÂëÆ÷4
-                 Feed_flag += Feed_speed;
+                Feed_speed = ENC_GetCounter(ENC2_InPut_P33_7); //Ç°ï¿½ï¿½Îªï¿½ï¿½Öµ//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½4
+                Feed_flag += Feed_speed;
             }
         }
     }
-    else // 0£º×ó³öÈë¿â£»
+    else // 0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â£»
     {
-        if (inout) // 1×óÈë¿â
+        if (inout) // 1ï¿½ï¿½ï¿½ï¿½ï¿½
         {
-             ps = Feed_flag;
-            DJ_PID(40);  // »ØÖÐ×¼±¸µ¹³µ
-            /*ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);  //¼ÌÐøÇ°½ø
+            ps = Feed_flag;
+            DJ_PID(40); // ï¿½ï¿½ï¿½ï¿½×¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            /*ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);  //ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½
             ATOM_PWM_SetDuty(ATOMPWM4, 2000, 12500);
             */
-            MotorCtrl4w(1500,1500,1500,1500);//2000
+            MotorCtrl4w(1500, 1500, 1500, 1500); // 2000
 
-            while (Feed_flag < ps + 2000) // ¼ÌÐøÇ°½ø´óÔ¼35cm
+            while (Feed_flag < ps + 2000) // ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½Ô¼35cm
             {
                 delayms(10);
             }
             /*ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);
-            ATOM_PWM_SetDuty(ATOMPWM4, 1000, 12500);      // ·´×ªÉ²³µ
+            ATOM_PWM_SetDuty(ATOMPWM4, 1000, 12500);      // ï¿½ï¿½×ªÉ²ï¿½ï¿½
             */
-            MotorCtrl4w(1500,1500,1500,1500);//2000
+            MotorCtrl4w(1500, 1500, 1500, 1500); // 2000
 
-            delayms(300);  //É²³µÊ±¼ä¿ÉÒÔÕû¶¨
+            delayms(300); //É²ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             ps = Feed_flag;
-            DJ_PID(5);    // ¶æ»úÏò×ó´òËÀ
-//            ATOM_PWM_SetDuty(ATOMPWM5, 2000, 12500);  //ºóÍË
-//            ATOM_PWM_SetDuty(ATOMPWM4, 0, 12500);
-            MotorCtrl4w(1500,1500,1500,1500);//2000
+            DJ_PID(5);                           // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                                                 //            ATOM_PWM_SetDuty(ATOMPWM5, 2000, 12500);  //ï¿½ï¿½ï¿½ï¿½
+                                                 //            ATOM_PWM_SetDuty(ATOMPWM4, 0, 12500);
+            MotorCtrl4w(1500, 1500, 1500, 1500); // 2000
 
-            while (Feed_flag > ps - 2000) // ´ÓÍ£³µÎ»³ö¿â£¬´óÔ¼Òª512±àÂëÆ÷2000¸öÂö³å£¬ÁúÇñ512´ø·½Ïò±àÂëÆ÷1Ã×5790¸öÂö³å
+            while (Feed_flag > ps - 2000) // ï¿½ï¿½Í£ï¿½ï¿½Î»ï¿½ï¿½ï¿½â£¬ï¿½ï¿½Ô¼Òª512ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2000ï¿½ï¿½ï¿½ï¿½ï¿½å£¬ï¿½ï¿½ï¿½ï¿½512ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½5790ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             {
                 delayms(10);
             }
             ps = Feed_flag;
-            DJ_PID(40);  // »ØÖÐµ¹³µ
-//            ATOM_PWM_SetDuty(ATOMPWM5, 2000, 12500);  //ºóÍË
-//            ATOM_PWM_SetDuty(ATOMPWM4, 0, 12500);
-            MotorCtrl4w(1500,1500,1500,1500);//2000
+            DJ_PID(40);                          // ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½
+                                                 //            ATOM_PWM_SetDuty(ATOMPWM5, 2000, 12500);  //ï¿½ï¿½ï¿½ï¿½
+                                                 //            ATOM_PWM_SetDuty(ATOMPWM4, 0, 12500);
+            MotorCtrl4w(1500, 1500, 1500, 1500); // 2000
 
-            while (Feed_flag > ps - 800)  // Ð¡³µºóÍËÎªÕýÖµ£¬²¢ÀÛ¼Óµ½³ö¿âÎªÖ¹
+            while (Feed_flag > ps - 800) // Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½Û¼Óµï¿½ï¿½ï¿½ï¿½ï¿½ÎªÖ¹
             {
                 delayms(10);
             }
-//            ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);
-//            ATOM_PWM_SetDuty(ATOMPWM4, 1000, 12500);      // ·´×ªÉ²³µ
-            MotorCtrl4w(1500,1500,1500,1500);//2000
+            //            ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);
+            //            ATOM_PWM_SetDuty(ATOMPWM4, 1000, 12500);      // ï¿½ï¿½×ªÉ²ï¿½ï¿½
+            MotorCtrl4w(1500, 1500, 1500, 1500); // 2000
 
-            delayms(300);                // µç»ú·´×ªÉ²³µ£¬·ÀÖ¹»¬³öÈüµÀ£¬Ê±¼ä¸ù¾ÝËÙ¶Èµ÷Õû
-//            ATOM_PWM_SetDuty(ATOMPWM5, 1000, 12500);
-//            ATOM_PWM_SetDuty(ATOMPWM4, 1000, 12500);      // Í£³µ
-            MotorCtrl4w(1500,1500,1500,1500);//2000
+            delayms(300);                        // ï¿½ï¿½ï¿½ï¿½ï¿½×ªÉ²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶Èµï¿½ï¿½ï¿½
+                                                 //            ATOM_PWM_SetDuty(ATOMPWM5, 1000, 12500);
+                                                 //            ATOM_PWM_SetDuty(ATOMPWM4, 1000, 12500);      // Í£ï¿½ï¿½
+            MotorCtrl4w(1500, 1500, 1500, 1500); // 2000
 
-            while (1);                   // Èë¿âÍê±Ï£¬ÓÀ¾ÃÍ£³µ
+            while (1)
+                ; // ï¿½ï¿½ï¿½ï¿½ï¿½Ï£ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½ï¿½
         }
-        else  // ×ó³ö¿â
+        else // ï¿½ï¿½ï¿½ï¿½ï¿½
         {
-            // 2020ÄêÐÂ¼Ó³ö¿âÔªËØ£¬´Ë´¦ÎªÃ¤×ß³ö¿â
+            // 2020ï¿½ï¿½ï¿½Â¼Ó³ï¿½ï¿½ï¿½Ôªï¿½Ø£ï¿½ï¿½Ë´ï¿½ÎªÃ¤ï¿½ß³ï¿½ï¿½ï¿½
             ps = Feed_flag;
-            DJ_PID(40);    // Ö±ÐÐ´óÔ¼10cm
-//            ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);  //¼ÌÐøÇ°½ø
-//            ATOM_PWM_SetDuty(ATOMPWM4, 2000, 12500);
-            MotorCtrl4w(1500,1500,1500,1500);//2000
+            DJ_PID(40);                          // Ö±ï¿½Ð´ï¿½Ô¼10cm
+                                                 //            ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);  //ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½
+                                                 //            ATOM_PWM_SetDuty(ATOMPWM4, 2000, 12500);
+            MotorCtrl4w(1500, 1500, 1500, 1500); // 2000
 
             while (Feed_flag < ps + 600)
             {
@@ -153,10 +151,10 @@ void OutInGarage (uint8 inout, uint8 lr)//  inout Îª1 Èë¿â  lrÎª1  ÓÒ
             }
 
             ps = Feed_flag;
-            DJ_PID(5);     // ¶æ»úÏò×ó´òËÀÎª³ö¿â×ö×¼±¸
-//            ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);  //¼ÌÐøÇ°½ø
-//            ATOM_PWM_SetDuty(ATOMPWM4, 3000, 12500);
-            MotorCtrl4w(1500,1500,1500,1500);//2000
+            DJ_PID(5);                           // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¼ï¿½ï¿½
+                                                 //            ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);  //ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½
+                                                 //            ATOM_PWM_SetDuty(ATOMPWM4, 3000, 12500);
+            MotorCtrl4w(1500, 1500, 1500, 1500); // 2000
 
             while (Feed_flag < ps + 1200)
             {
@@ -165,7 +163,3 @@ void OutInGarage (uint8 inout, uint8 lr)//  inout Îª1 Èë¿â  lrÎª1  ÓÒ
         }
     }
 }
-
-
-
-
