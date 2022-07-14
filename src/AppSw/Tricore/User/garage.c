@@ -33,7 +33,7 @@ void OutInGarage (uint8 inout, uint8 lr)//  inout 为1 入库  lr为1  右
                        while (Feed_flag < ps + 700)
                        {
                            Feed_speed=ENC_GetCounter(ENC2_InPut_P33_7);//前进为正值//编码器4
-                           Feed_flag += Feed_speed;
+                           Feed_flag -= Feed_speed;
 
                       }
 
@@ -165,5 +165,7 @@ void OutInGarage (uint8 inout, uint8 lr)//  inout 为1 入库  lr为1  右
         }
     }
 }
+
+
 
 

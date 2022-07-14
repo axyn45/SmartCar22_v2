@@ -100,15 +100,16 @@ void GUI_Duty(void)
 
       if(KEY_Read(DSW0))//调整舵机中值
       {
-      DJ_midpoint=Button_Duty(DJ_midpoint);   //舵机中值整定
-      TFTSPI_P6X8Str(0,10, "DJ_midpoint",u16WHITE,u16BLUE);
+//      DJ_midpoint=Button_Duty(DJ_midpoint);   //舵机中值整定
+      speed_SW_flag=Button_Duty(speed_SW_flag);
+      TFTSPI_P6X8Str(0,10, "speed_SW_flag",u16WHITE,u16BLUE);
 
-      sprintf(txt,"DJ_midpoint:%d",DJ_midpoint);  //舵机P值
+      sprintf(txt,"speed_SW_flag:%d",speed_SW_flag);  //舵机P值
       TFTSPI_P6X8Str(0,11,(float*)txt,u16WHITE,u16BLUE);
       }
       else//调整舵机P
       {
-      //speed_SW_flag=Button_Duty(speed_SW_flag);   //速度档位选择
+//      speed_SW_flag=Button_Duty(speed_SW_flag);   //速度档位选择
           TFTSPI_P6X8Str(0,10, "DJ_PWM",u16WHITE,u16BLUE);
       KP_A=Button_Duty(KP_A);
 

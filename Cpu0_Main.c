@@ -167,7 +167,7 @@ int core0_main (void)
 
 
 
-         //     for(uint8 i=59;i>0;i--)              //oled显示中线
+           //  for(uint8 i=59;i>0;i--)              //oled显示中线
            //  Pixle[i][(mid_point[i])]=0;
 
                   CAR_Drive_duty();               //舵机控制与电机控制（转向与速度）
