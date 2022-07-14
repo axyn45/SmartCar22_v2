@@ -24,6 +24,7 @@ RM := rm -rf
 -include Libraries/iLLD/TC26B/Tricore/Qspi/SpiMaster/subdir.mk
 -include Libraries/iLLD/TC26B/Tricore/Port/Std/subdir.mk
 -include Libraries/iLLD/TC26B/Tricore/Port/Io/subdir.mk
+-include Libraries/iLLD/TC26B/Tricore/Mtu/Std/subdir.mk
 -include Libraries/iLLD/TC26B/Tricore/I2c/Std/subdir.mk
 -include Libraries/iLLD/TC26B/Tricore/I2c/I2c/subdir.mk
 -include Libraries/iLLD/TC26B/Tricore/Gtm/Trig/subdir.mk
@@ -87,25 +88,39 @@ endif
 
 -include ../makefile.defs
 
+OPTIONAL_TOOL_DEPS := \
+$(wildcard ../makefile.defs) \
+$(wildcard ../makefile.init) \
+$(wildcard ../makefile.targets) \
+
+
+BUILD_ARTIFACT_NAME := zwh111
+BUILD_ARTIFACT_EXTENSION := elf
+BUILD_ARTIFACT_PREFIX :=
+BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
+
 # Add inputs and outputs from these tool invocations to the build variables 
 SECONDARY_SIZE += \
-SmartCar22_v2.siz \
+zwh111.siz \
 
 
 # All Target
-all: SmartCar22_v2.elf secondary-outputs
+all: main-build
+
+# Main-build Target
+main-build: zwh111.elf secondary-outputs
 
 # Tool invocations
-SmartCar22_v2.elf: $(OBJS)
+zwh111.elf: $(OBJS) makefile objects.mk $(OPTIONAL_TOOL_DEPS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: TASKING Linker'
-	cctc -lrt -lfp_fpu -lcs_fpu  -Wl-Oc -Wl-OL -Wl-Ot -Wl-Ox -Wl-Oy -Wl--map-file="SmartCar22_v2.map" -Wl-mc -Wl-mf -Wl-mi -Wl-mk -Wl-ml -Wl-mm -Wl-md -Wl-mr -Wl-mu --no-warnings= -Wl--error-limit=42 --strict --anachronisms --force-c++ -Ctc26xb   -o"SmartCar22_v2.elf" -Wl-o"SmartCar22_v2.hex:IHEX" --lsl-core=vtc  --lsl-file=../Lcf_Tasking_Tricore_Tc.lsl $(OBJS)
+	cctc -lrt -lfp_fpu -lcs_fpu  -Wl-Oc -Wl-OL -Wl-Ot -Wl-Ox -Wl-Oy -Wl--map-file="zwh111.map" -Wl-mc -Wl-mf -Wl-mi -Wl-mk -Wl-ml -Wl-mm -Wl-md -Wl-mr -Wl-mu --no-warnings= -Wl--error-limit=42 --exceptions --strict --anachronisms --force-c++ -Ctc26xb   -o"zwh111.elf" -Wl-o"zwh111.hex:IHEX" --lsl-core=vtc  --lsl-file=../Lcf_Tasking_Tricore_Tc.lsl $(OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-SmartCar22_v2.siz: SmartCar22_v2.elf
+zwh111.siz: zwh111.elf makefile objects.mk $(OPTIONAL_TOOL_DEPS)
 	@echo 'Invoking: Print Size'
-	elfsize  "SmartCar22_v2.elf"
+	elfsize  "zwh111.elf"
 	@echo 'Finished building: $@'
 	@echo ' '
 
@@ -116,6 +131,6 @@ clean:
 
 secondary-outputs: $(SECONDARY_SIZE)
 
-.PHONY: all clean dependents
+.PHONY: all clean dependents main-build
 
 -include ../makefile.targets
