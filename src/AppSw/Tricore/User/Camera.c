@@ -1,63 +1,59 @@
-#include"Camera.h"
+#include "Camera.h"
 #include <include.h>
 #include<stdbool.h>
-/***********************ÉãÏñÍ·ÓÐ¹Ø²ÎÊý***************************/
-/*µ÷¿Ø²ÎÁ¿*/
-uint8 img_y_max=29;             //É¨Ãè×Ý×ø±ê×î½üÖµ
-uint8 img_y_min=10;             //É¨Ãè×Ý×ø±ê×îÔ¶Öµ
-uint8 img_y_control=25;         //É¨Ãè×Ý×ø±ê¿ØÖÆÖµ
-/*´«µÝ²ÎÁ¿*/
-uint8 img_x=40;                 //É¨Ãèºá×ø±ê
-uint8 img_y=30;                 //É¨Ãè×Ý×ø±ê
-uint8 start_point=40;           //É¨ÃèÆðÊ¼µã
-uint8 mid_point[60];            //ÌáÈ¡µÄÖÐÏß
+/***********************ï¿½ï¿½ï¿½ï¿½Í·ï¿½Ð¹Ø²ï¿½ï¿½ï¿½***************************/
+/*ï¿½ï¿½ï¿½Ø²ï¿½ï¿½ï¿½*/
+uint8 img_y_max=29;             //É¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+uint8 img_y_min=10;             //É¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶Öµ
+uint8 img_y_control=25;         //É¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+/*ï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½*/
+uint8 img_x=40;                 //É¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+uint8 img_y=30;                 //É¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+uint8 start_point=40;           //É¨ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
+uint8 mid_point[60];            //ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 unsigned char mid_line[60];
-uint8 mid_point_His[10];        //ÀúÊ·µÄÖÐÏß
-uint8 left_point[60];           //×ó±ß½ç
-uint8 right_point[60];          //ÓÒ±ß½ç
- uint8  leftState = 0;
- uint8  rightState = 0;
-uint8 init_len[60];             //³õÊ¼»¯ÈüµÀ¿í¶È
-uint8 point_len[60];            //ÊµÊ±ÈüµÀ¿í¶È
-uint8 street_len;             //Ö±µÀ³¤¶È
-
+uint8 mid_point_His[10]; //ï¿½ï¿½Ê·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+uint8 left_point[60];    //ï¿½ï¿½ß½ï¿½
+uint8 right_point[60];   //ï¿½Ò±ß½ï¿½
+uint8 leftState = 0;
+uint8 rightState = 0;
+uint8 init_len[60];  //ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+uint8 point_len[60]; //ÊµÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+uint8 street_len;    //Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 uint8 above_arr[LCDW];
 
-uint8   cross_white[LCDW];
-uint8   ru_num;
-uint8   cross_zuowhite[LCDH];
-uint8   cross_youwhite[LCDH];
-uint8   cross_hangwhite[LCDH];
+uint8 cross_white[LCDW];
+uint8 ru_num;
+uint8 cross_zuowhite[LCDH];
+uint8 cross_youwhite[LCDH];
+uint8 cross_hangwhite[LCDH];
 
-
-int lefthuandao_flag;     //½øÈë×ó»·µº¼ì²â±êÖ¾Î»
+int lefthuandao_flag; //ï¿½ï¿½ï¿½ï¿½ï¿½ó»·µï¿½ï¿½ï¿½ï¿½ï¿½Ö¾Î»
 uint8 righthuandao_flag;
-int shizi_flag;          //½øÈëÊ®×Ö±êÖ¾Î»
-int shizi_count=0;
+int shizi_flag; //ï¿½ï¿½ï¿½ï¿½Ê®ï¿½Ö±ï¿½Ö¾Î»
+int shizi_count = 0;
 
-int huandaoshibie=1;//»·µºÊ¶±ð********************************************
-int shizishibie=0;//Ê®×ÖÊ¶±ð
-int chekushibie=0;
+int huandaoshibie = 1; //ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½********************************************
+int shizishibie = 0;   //Ê®ï¿½ï¿½Ê¶ï¿½ï¿½
+int chekushibie = 0;
 
+uint8 podao_flag;  //ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½Ö¾Î»
+int sancha_flag;   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½Ú±ï¿½Ö¾Î»
+uint8 garage_flag; //ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾Î»
 
-uint8 podao_flag;        //½øÈëÆÂµÀ±êÖ¾Î»
-int sancha_flag;         //½øÈëÈý²æÂ·¿Ú±êÖ¾Î»
-uint8 garage_flag;       //³µ¿â±êÖ¾Î»
+int podaostate = 0;
+int leftstate = 0; //ï¿½ó»·µï¿½ï¿½×¶Î±ï¿½Ö¾Î»
+uint8 rightstate = 0;
+int shizistate = 0;  //Ê®ï¿½Ö½×¶Î±ï¿½Ö¾Î»
+int sanchastate = 0; //ï¿½ï¿½ï¿½ï¿½Â·ï¿½Ú±ï¿½Ö¾Î»
 
-int podaostate=0;
-int  leftstate=0;         //×ó»·µº½×¶Î±êÖ¾Î»
-uint8 rightstate=0;
-int  shizistate=0;        //Ê®×Ö½×¶Î±êÖ¾Î»
-int  sanchastate=0;       //Èý²æÂ·¿Ú±êÖ¾Î»
-
-
-uint16 Left_huandao1  ;      //ÏÂÃæ»áÓÃµ½ÖµÈ¥ÅÐ¶Ï,ÎªÊ²Ã´²»Ö±½ÓÈ¥ÅÐ¶Ï,Ö±½ÓÅÐ¶ÏÔÚ±àÒë¹ý³ÌÖÐ¾Í»á³öÏÖµØÖ··ÖÅäÒì³£
-uint16 Left_huandao2  ;
-uint16 Left_huandao3  ;
-uint16 Right_huandao1 ;
-uint16 Right_huandao2 ;
-uint16 Right_huandao3 ;
+uint16 Left_huandao1; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½ÖµÈ¥ï¿½Ð¶ï¿½,ÎªÊ²Ã´ï¿½ï¿½Ö±ï¿½ï¿½È¥ï¿½Ð¶ï¿½,Ö±ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½Ú±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¾Í»ï¿½ï¿½ï¿½Öµï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ì³£
+uint16 Left_huandao2;
+uint16 Left_huandao3;
+uint16 Right_huandao1;
+uint16 Right_huandao2;
+uint16 Right_huandao3;
 uint8 Right_huandao4;
 uint16 mid_white;
 uint16 mid_white1;
@@ -67,10 +63,10 @@ uint16 you_white;
 
 uint8 Rightzhiline;
 uint8 Leftzhiline;
-uint8 white_black ;
-uint8 black_white  ;
-uint8 garage_count=0 ;
-uint8 garage_delay=0;
+uint8 white_black;
+uint8 black_white;
+uint8 garage_count = 0;
+uint8 garage_delay = 0;
 float old_Yaw;
 float zhuanjiaozhi;
 uint8 right_count;
@@ -78,145 +74,145 @@ uint8 left_count;
 uint8 san_white;
 uint8 biaozhun;
 uint8 shang_white;
-///¹ÕµãÊý
-uint8 lx1,ly1,rx1,ry1,lx2,ly2,rx2,ry2,lx3,ly3,rx3,ry3,lx4,ly4,rx4,ry4;
-int lx5,ly5,rx5,ry5,lx6,ly6,rx6,ry6,lx7,ly7,rx7,ry7,lx8,ly8,rx8,ry8,lx13,ly13,rx13,ry13,lx14,ly14,rx14,ry14;
-int lx9,ly9,rx9,ry9,lx10,ly10,rx10,ry10,lx11,ly11,rx11,ry11,lx12,ly12,rx12,ry12;
+///ï¿½Õµï¿½ï¿½ï¿½
+uint8 lx1, ly1, rx1, ry1, lx2, ly2, rx2, ry2, lx3, ly3, rx3, ry3, lx4, ly4, rx4, ry4;
+int lx5, ly5, rx5, ry5, lx6, ly6, rx6, ry6, lx7, ly7, rx7, ry7, lx8, ly8, rx8, ry8, lx13, ly13, rx13, ry13, lx14, ly14, rx14, ry14;
+int lx9, ly9, rx9, ry9, lx10, ly10, rx10, ry10, lx11, ly11, rx11, ry11, lx12, ly12, rx12, ry12;
 uint8 mend_flag;
-uint8 sancha_count=0;
-uint8 zebra_count=0;
-uint8 ruku_flag=0;//*****************************************************
+uint8 sancha_count = 0;
+uint8 zebra_count = 0;
+uint8 ruku_flag = 0; //*****************************************************
 
-//                   £¡ÏÂÒ»²¿·Ö£ºÍ¼Ïñ´¦Àí²¿·Ö£¡
+//                   ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ö£ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö£ï¿½
 
 /************************************************************
 
-¡¾º¯ÊýÃû³Æ¡¿lost_line_right
-¡¾¹¦    ÄÜ¡¿ÓÒ²àÍ¼Ïñ¶ªÏß¼ì²éº¯Êý
-¡¾²Î    Êý¡¿ÎÞ
-¡¾·µ »Ø Öµ¡¿-1ÎªÎ´¶ªÏß ÆäËûÎª¶ªÏßÆðÊ¼ÐÐ
-¡¾Êµ    Àý¡¿lost_line_right();
-¡¾×¢ÒâÊÂÏî¡¿ÎÞ
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¡ï¿½lost_line_right
+ï¿½ï¿½ï¿½ï¿½    ï¿½Ü¡ï¿½ï¿½Ò²ï¿½Í¼ï¿½ï¿½ï¿½ß¼ï¿½éº¯ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Öµï¿½ï¿½-1ÎªÎ´ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
+ï¿½ï¿½Êµ    ï¿½ï¿½ï¿½ï¿½lost_line_right();
+ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½î¡¿ï¿½ï¿½
 
 ************************************************************/
 
 int Lost_line_right(void)
 {
   uint8 i;
-  for(i=25;i>5;i--)
-  if(right_point[i]==79)     return i;
+  for (i = 25; i > 5; i--)
+    if (right_point[i] == 79)
+      return i;
   return -1;
 }
 
 /************************************************************
 
-¡¾º¯ÊýÃû³Æ¡¿lost_line_left
-¡¾¹¦    ÄÜ¡¿×ó²àÍ¼Ïñ¶ªÏß¼ì²éº¯Êý
-¡¾²Î    Êý¡¿ÎÞ
-¡¾·µ »Ø Öµ¡¿-1ÎªÎ´¶ªÏß ÆäËûÎª¶ªÏßÆðÊ¼ÐÐ
-¡¾Êµ    Àý¡¿lost_line_left();
-¡¾×¢ÒâÊÂÏî¡¿ÎÞ
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¡ï¿½lost_line_left
+ï¿½ï¿½ï¿½ï¿½    ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ß¼ï¿½éº¯ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Öµï¿½ï¿½-1ÎªÎ´ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
+ï¿½ï¿½Êµ    ï¿½ï¿½ï¿½ï¿½lost_line_left();
+ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½î¡¿ï¿½ï¿½
 
 ************************************************************/
 
 int Lost_line_left(void)
 {
   uint8 i;
-  for(i=25;i>5;i--)
-  if(left_point[i]==0) return i;
+  for (i = 25; i > 5; i--)
+    if (left_point[i] == 0)
+      return i;
   return -1;
 }
 
-
 /************************************************************
 
-¡¾º¯ÊýÃû³Æ¡¿Horizontal_line
-¡¾¹¦    ÄÜ¡¿Ë®Æ½Ñ²Ïßº¯Êý
-¡¾²Î    Êý¡¿ÎÞ
-¡¾·µ »Ø Öµ¡¿ÎÞ
-¡¾Êµ    Àý¡¿Horizontal_line();
-¡¾×¢ÒâÊÂÏî¡¿ÎÞ
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¡ï¿½Horizontal_line
+ï¿½ï¿½ï¿½ï¿½    ï¿½Ü¡ï¿½Ë®Æ½Ñ²ï¿½ßºï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Öµï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½Êµ    ï¿½ï¿½ï¿½ï¿½Horizontal_line();
+ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½î¡¿ï¿½ï¿½
 
 ************************************************************/
 
 void Horizontal_line(void)
 {
-  uint8 i,j;
-  if(Pixle[LCDH-1][LCDW/2]==0)
+  uint8 i, j;
+  if (Pixle[LCDH - 1][LCDW / 2] == 0)
   {
-    if(Pixle[LCDH-1][5]==0xff)
-     mid_point[LCDH]=5;
-    else if(Pixle[LCDH-1][LCDW-5]==0xff)
-     mid_point[LCDH]=LCDW-5;
+    if (Pixle[LCDH - 1][5] == 0xff)
+      mid_point[LCDH] = 5;
+    else if (Pixle[LCDH - 1][LCDW - 5] == 0xff)
+      mid_point[LCDH] = LCDW - 5;
     else
-     mid_point[LCDH]=LCDW/2;
+      mid_point[LCDH] = LCDW / 2;
   }
   else
-   mid_point[LCDH]=LCDW/2;
-  for(i=LCDH-1;i>0;i--)
+    mid_point[LCDH] = LCDW / 2;
+  for (i = LCDH - 1; i > 0; i--)
   {
-    for(j=mid_point[i+1];j>=0;j--)
+    for (j = mid_point[i + 1]; j >= 0; j--)
     {
-      if(Pixle[i][j]==0||j==0)
+      if (Pixle[i][j] == 0 || j == 0)
       {
-        left_point[i]=j;
+        left_point[i] = j;
         break;
       }
     }
-    for(j=mid_point[i+1];j<=LCDW-1;j++)
+    for (j = mid_point[i + 1]; j <= LCDW - 1; j++)
     {
-      if(Pixle[i][j]==0||j==LCDW-1)
+      if (Pixle[i][j] == 0 || j == LCDW - 1)
       {
-        right_point[i]=j;
+        right_point[i] = j;
         break;
       }
     }
-   mid_point[i]=(left_point[i]+right_point[i])/2;
-   if(Pixle[i-1][mid_point[i]]==0||i==0)
+    mid_point[i] = (left_point[i] + right_point[i]) / 2;
+    if (Pixle[i - 1][mid_point[i]] == 0 || i == 0)
     {
-   for(j=i;j>0;j--)
-   {
-   mid_point[j]=mid_point[i];
-    left_point[j]=mid_point[i];
-    right_point[j]=mid_point[i];
-   }
+      for (j = i; j > 0; j--)
+      {
+        mid_point[j] = mid_point[i];
+        left_point[j] = mid_point[i];
+        right_point[j] = mid_point[i];
+      }
       break;
     }
   }
 }
 
 /************************************************************
-¡¾º¯ÊýÃû³Æ¡¿portrait_line
-¡¾¹¦    ÄÜ¡¿×ÝÏòÑ²Ïßº¯Êý
-¡¾²Î    Êý¡¿ÎÞ
-¡¾·µ »Ø Öµ¡¿ÎÞ
-¡¾Êµ    Àý¡¿portrait_line();
-¡¾×¢ÒâÊÂÏî¡¿ÎÞ
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¡ï¿½portrait_line
+ï¿½ï¿½ï¿½ï¿½    ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½Ñ²ï¿½ßºï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Öµï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½Êµ    ï¿½ï¿½ï¿½ï¿½portrait_line();
+ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½î¡¿ï¿½ï¿½
 ***********************************************************/
-
 
 void portrait_line(void)
 {
-  uint8 i,j;
-  for(i=0;i<LCDW;i++)
+  uint8 i, j;
+  for (i = 0; i < LCDW; i++)
   {
-    for(j=LCDH-1;j>=0;j--)
+    for (j = LCDH - 1; j >= 0; j--)
     {
-      if(Pixle[j][i]==0||j==0)
+      if (Pixle[j][i] == 0 || j == 0)
       {
-        above_arr[i]=j;
+        above_arr[i] = j;
         break;
       }
     }
   }
 }
 
-void connect_line(uint8 x1,uint8 y1,uint8 x2,uint8 y2)//²¹Ïßº¯Êý£¬ÌØÊâÔªËØÐèÒª²¹Ïß£¨¼´ÊÖ¶¯²¹Ò»¸ö±ß½ç£©
+void connect_line(uint8 x1, uint8 y1, uint8 x2, uint8 y2) //ï¿½ï¿½ï¿½ßºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½Ö¶ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ß½ç£©
 {
 
-   short i,j,swap;
+  short i, j, swap;
   float k;
-  if(y1>y2)
+  if (y1 > y2)
   {
     swap = x1;
     x1 = x2;
@@ -225,137 +221,130 @@ void connect_line(uint8 x1,uint8 y1,uint8 x2,uint8 y2)//²¹Ïßº¯Êý£¬ÌØÊâÔªËØÐèÒª²¹
     y1 = y2;
     y2 = swap;
   }
-  if(x1==x2)
+  if (x1 == x2)
   {
-    for(i=y1;i<y2+1;i++)
-//      a[i]=y1++;
-    Pixle[i][x1]=0;
+    for (i = y1; i < y2 + 1; i++)
+      //      a[i]=y1++;
+      Pixle[i][x1] = 0;
   }
-  else if(y1==y2)
+  else if (y1 == y2)
   {
-    for(i=x1;i<x2+1;i++)
-//      a[i]=x1++;
-    Pixle[y1][i]=0;
+    for (i = x1; i < x2 + 1; i++)
+      //      a[i]=x1++;
+      Pixle[y1][i] = 0;
   }
   else
   {
-    k = ((float)x2-(float)x1)/((float)y2-(float)y1);
-    for(i=y1;i<=y2;i++)
-    Pixle[i][(short)(x1+(i-y1)*k)]=0;
-
-
+    k = ((float)x2 - (float)x1) / ((float)y2 - (float)y1);
+    for (i = y1; i <= y2; i++)
+      Pixle[i][(short)(x1 + (i - y1) * k)] = 0;
   }
-
-
 }
 
 /************************************************************
 
-¡¾º¯ÊýÃû³Æ¡¿Straight_line_judgment
-¡¾¹¦    ÄÜ¡¿Ö±ÏßÅÐ¶Ïº¯Êý
-¡¾²Î    Êý¡¿arrÎª´«ÈëÊý×é
-¡¾·µ »Ø Öµ¡¿1ÎªÖ±Ïß 0Îª·ÇÖ±Ïß
-¡¾Êµ    Àý¡¿Straight_line_judgment(left_arr);
-¡¾×¢ÒâÊÂÏî¡¿Ö»ÅÐ¶Ï20-55
-²¢²»ÊÇºÜºÃÓÃ
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¡ï¿½Straight_line_judgment
+ï¿½ï¿½ï¿½ï¿½    ï¿½Ü¡ï¿½Ö±ï¿½ï¿½ï¿½Ð¶Ïºï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½arrÎªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Öµï¿½ï¿½1ÎªÖ±ï¿½ï¿½ 0Îªï¿½ï¿½Ö±ï¿½ï¿½
+ï¿½ï¿½Êµ    ï¿½ï¿½ï¿½ï¿½Straight_line_judgment(left_arr);
+ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½î¡¿Ö»ï¿½Ð¶ï¿½20-55
+ï¿½ï¿½ï¿½ï¿½ï¿½ÇºÜºï¿½ï¿½ï¿½
 ************************************************************/
-int sumR=0;
-
+int sumR = 0;
 
 void Straight_line_judgment(void)
 {
   int i;
 
-  for(i=30;i>15;i--)
-      {
-         if((right_point[i]-right_point[i-1]<3)&&right_point[i]-right_point[i-1]>0)
-          sumR++;
-      }
-      if(sumR>14)
-      {  Rightzhiline=1;
-          sumR=0;   }
-      else
-          Rightzhiline=0;
-
+  for (i = 30; i > 15; i--)
+  {
+    if ((right_point[i] - right_point[i - 1] < 3) && right_point[i] - right_point[i - 1] > 0)
+      sumR++;
+  }
+  if (sumR > 14)
+  {
+    Rightzhiline = 1;
+    sumR = 0;
+  }
+  else
+    Rightzhiline = 0;
 }
 
-
-void cunbaidian(void)//Ã¿Ò»ÁÐµÄ°×É«µãµÄÊýÁ¿£¬Ã¿Ò»ÐÐµÄ°×É«µãµÄÊýÁ¿£¬ÓÃÀ´ÅÐ¶ÏÈüµÀÔªËØ
+void cunbaidian(void) //Ã¿Ò»ï¿½ÐµÄ°ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿Ò»ï¿½ÐµÄ°ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 {
-  for(uint8 lie=0;lie<LCDW;lie++)
+  for (uint8 lie = 0; lie < LCDW; lie++)
   {
-    cross_white[lie]=0;
-        ru_num=0;
+    cross_white[lie] = 0;
+    ru_num = 0;
   }
-    //  //´æ°×µã ÁÐ
-    for(uint8 lie=0;lie<LCDW;lie++)
+  //  //ï¿½ï¿½×µï¿½ ï¿½ï¿½
+  for (uint8 lie = 0; lie < LCDW; lie++)
   {
-    for(uint8 hang=LCDH-1;hang>0;hang--)//40
+    for (uint8 hang = LCDH - 1; hang > 0; hang--) // 40
     {
-      if(Pixle[hang][lie]==1)
+      if (Pixle[hang][lie] == 1)
       {
         cross_white[lie]++;
       }
     }
-
-    }
-
-/////////////////ÐÐ×ó °×µã
-
-      for(uint8 hang=0;hang<LCDH;hang++)
-  {
-    cross_zuowhite[hang]=0;
   }
 
-  for(uint8 hang=LCDH-1;hang>0;hang--)
+  /////////////////ï¿½ï¿½ï¿½ï¿½ ï¿½×µï¿½
+
+  for (uint8 hang = 0; hang < LCDH; hang++)
   {
-    for(uint8 lie=0;lie<LCDW/2;lie++)
+    cross_zuowhite[hang] = 0;
+  }
+
+  for (uint8 hang = LCDH - 1; hang > 0; hang--)
+  {
+    for (uint8 lie = 0; lie < LCDW / 2; lie++)
     {
-      if(Pixle[hang][lie]==1)
+      if (Pixle[hang][lie] == 1)
       {
         cross_zuowhite[hang]++;
       }
     }
-    }
-
-/////////////////ÐÐÓÒ °×µã
-
-      for(uint8 hang=0;hang<LCDH;hang++)
-  {
-    cross_youwhite[hang]=0;
   }
 
-  for(uint8 hang=LCDH-1;hang>0;hang--)
+  /////////////////ï¿½ï¿½ï¿½ï¿½ ï¿½×µï¿½
+
+  for (uint8 hang = 0; hang < LCDH; hang++)
   {
-    for(uint8 lie=LCDW-1;lie>LCDW/2;lie--)
+    cross_youwhite[hang] = 0;
+  }
+
+  for (uint8 hang = LCDH - 1; hang > 0; hang--)
+  {
+    for (uint8 lie = LCDW - 1; lie > LCDW / 2; lie--)
     {
-      if(Pixle[hang][lie]==1)
+      if (Pixle[hang][lie] == 1)
       {
         cross_youwhite[hang]++;
       }
     }
-    }
-
-
-//////////////////////////////ÐÐ°×µã
-      for(uint8 hang=0;hang<LCDH;hang++)
-  {
-    cross_hangwhite[hang]=0;
   }
 
-      //´æ°×µã        ÐÐ
-  for(uint8 hang=LCDH-1;hang>0;hang--)
+  //////////////////////////////ï¿½Ð°×µï¿½
+  for (uint8 hang = 0; hang < LCDH; hang++)
   {
-    for(uint8 lie=0;lie<LCDW;lie++)
+    cross_hangwhite[hang] = 0;
+  }
+
+  //ï¿½ï¿½×µï¿½        ï¿½ï¿½
+  for (uint8 hang = LCDH - 1; hang > 0; hang--)
+  {
+    for (uint8 lie = 0; lie < LCDW; lie++)
     {
-      if(Pixle[hang][lie]==1)
+      if (Pixle[hang][lie] == 1)
       {
         cross_hangwhite[hang]++;
       }
     }
-    if(hang<50)
+    if (hang < 50)
     {
-      if(cross_hangwhite[hang]>110)
+      if (cross_hangwhite[hang] > 110)
         ru_num++;
     }
   }
@@ -363,209 +352,236 @@ void cunbaidian(void)//Ã¿Ò»ÁÐµÄ°×É«µãµÄÊýÁ¿£¬Ã¿Ò»ÐÐµÄ°×É«µãµÄÊýÁ¿£¬ÓÃÀ´ÅÐ¶ÏÈüµÀÔ
 
 void misslinecount(void)
 {
-    right_count = 0;
-    left_count  = 0;
+  right_count = 0;
+  left_count = 0;
 
-    for(uint8 i=28;i>10;i--)
+  for (uint8 i = 28; i > 10; i--)
+  {
+    if (left_point[i] < 1)
     {
-        if(left_point[i]<1)
-        {
-            left_count++;
-        }
-        if(right_point[i]>75)
-        {
-            right_count++;
-        }
+      left_count++;
     }
+    if (right_point[i] > 75)
+    {
+      right_count++;
+    }
+  }
 }
 /************************************************************
 
-¡¾º¯ÊýÃû³Æ¡¿saidaokuandu
-¡¾¹¦    ÄÜ¡¿ÈüµÀ¿í¶È²âÁ¿
-¡¾²Î    Êý¡¿ÎÞ
-¡¾·µ »Ø Öµ¡¿ÎÞ
-¡¾Êµ    Àý¡¿
-¡¾×¢ÒâÊÂÏî¡¿ÎÞ
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¡ï¿½saidaokuandu
+ï¿½ï¿½ï¿½ï¿½    ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È²ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Öµï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½Êµ    ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½î¡¿ï¿½ï¿½
 
 ************************************************************/
 void saidaokuandu(void)
 {
-    for(img_y=29;img_y>=10;img_y--)
-    {
-        point_len[img_y]=right_point[img_y]-left_point[img_y];
+  for (img_y = 29; img_y >= 10; img_y--)
+  {
+    point_len[img_y] = right_point[img_y] - left_point[img_y];
 
-    if(left_point[img_y]<5)          lost_left[img_y]=1;           //×ó¶ªÏßÅÐ¶Ï
-    else lost_left[img_y]=0;
+    if (left_point[img_y] < 5)
+      lost_left[img_y] = 1; //ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½
+    else
+      lost_left[img_y] = 0;
 
-    if(right_point[img_y]>75)      lost_right[img_y]=1;        //ÓÒ¶ªÏßÅÐ¶Ï
-    else lost_right[img_y]=0;
+    if (right_point[img_y] > 75)
+      lost_right[img_y] = 1; //ï¿½Ò¶ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½
+    else
+      lost_right[img_y] = 0;
   }
-    }
-/************************************ÏßÐÔ»Ø¹é¼ÆËãÖÐÏßÐ±ÂÊ************************************/
+}
+/************************************ï¿½ï¿½ï¿½Ô»Ø¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½************************************/
 // y = Ax+B
-float B,A;
-int regression(int startline,int endline)
+float B, A;
+int regression(int startline, int endline)
 {
-    float SumUp=0,SumDown=0,avrX=0,avrY=0;
-  int i=0,SumX=0,SumY=0,SumLines = 0;
+  float SumUp = 0, SumDown = 0, avrX = 0, avrY = 0;
+  int i = 0, SumX = 0, SumY = 0, SumLines = 0;
 
-  SumLines=endline-startline;   // startline Îª¿ªÊ¼ÐÐ£¬ //endline ½áÊøÐÐ //SumLines
+  SumLines = endline - startline; // startline Îªï¿½ï¿½Ê¼ï¿½Ð£ï¿½ //endline ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ //SumLines
 
-  for(i=startline;i<endline;i++)
+  for (i = startline; i < endline; i++)
   {
-    SumX+=mid_point[i];
-    SumY+=i; //ÕâÀïMiddle_blackÎª´æ·ÅÖÐÏßµÄÊý×é
+    SumX += mid_point[i];
+    SumY += i; //ï¿½ï¿½ï¿½ï¿½Middle_blackÎªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ßµï¿½ï¿½ï¿½ï¿½ï¿½
   }
-  avrX=SumX/SumLines;     //XµÄÆ½¾ùÖµ
-  avrY=SumY/SumLines;     //YµÄÆ½¾ùÖµ
-  SumUp=0;
-  SumDown=0;
-  for(i=startline;i<endline;i++)
+  avrX = SumX / SumLines; // Xï¿½ï¿½Æ½ï¿½ï¿½Öµ
+  avrY = SumY / SumLines; // Yï¿½ï¿½Æ½ï¿½ï¿½Öµ
+  SumUp = 0;
+  SumDown = 0;
+  for (i = startline; i < endline; i++)
   {
-    SumUp+=(mid_point[i]-avrY)*(i-avrX);
-    SumDown+=(i-avrX)*(i-avrX);
+    SumUp += (mid_point[i] - avrY) * (i - avrX);
+    SumDown += (i - avrX) * (i - avrX);
   }
-  if(SumDown==0)
-    B=0;
+  if (SumDown == 0)
+    B = 0;
   else
-    B=(int)(SumUp/SumDown);
-    A=(SumY-B*SumX)/SumLines;  //½Ø¾à
-    //return B;  //·µ»ØÐ±ÂÊ
+    B = (int)(SumUp / SumDown);
+  A = (SumY - B * SumX) / SumLines; //ï¿½Ø¾ï¿½
+                                    // return B;  //ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½
 }
 
 /************************************************************
 
-¡¾º¯ÊýÃû³Æ¡¿garage__dispose
-¡¾¹¦    ÄÜ¡¿Èë¿â´¦Àíº¯Êý
-¡¾²Î    Êý¡¿ÎÞ
-¡¾·µ »Ø Öµ¡¿ÎÞ
-¡¾Êµ    Àý¡¿garage__dispose();
-¡¾×¢ÒâÊÂÏî¡¿ÎÞ
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¡ï¿½garage__dispose
+ï¿½ï¿½ï¿½ï¿½    ï¿½Ü¡ï¿½ï¿½ï¿½â´¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Öµï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½Êµ    ï¿½ï¿½ï¿½ï¿½garage__dispose();
+ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½î¡¿ï¿½ï¿½
 
 ************************************************************/
 
-
-void garage__dispose(void)//Ê¶±ð°ßÂíÏß£¬Ê¶±ðºÚ°×Ìø±ä´ïµ½ãÐÖµ¼´Îª°ßÂíÏß±êÖ¾
+void garage__dispose(void) //Ê¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß£ï¿½Ê¶ï¿½ï¿½Ú°ï¿½ï¿½ï¿½ï¿½ï¿½ïµ½ï¿½ï¿½Öµï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ß±ï¿½Ö¾
 {
-    white_black = 0 ;
-    black_white = 0 ;
-    //garage_count= 0 ;
+  white_black = 0;
+  black_white = 0;
+  // garage_count= 0 ;
 
-    ///////////³µ¿âÔÚ×ó±ß£¬Èë¿â
-    for(uint8 hang = 35;hang>15; hang-- )
-     {
-         for(uint8 lie = right_point[left_lost_flag+5];lie>10;lie--)
-          {
-                    if(Pixle[hang][lie]==1&&Pixle[hang][lie-2]==0)
-                    {
-                        white_black++;
-                    }
+  ///////////ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½
+  for (uint8 hang = 35; hang > 15; hang--)
+  {
+    for (uint8 lie = right_point[left_lost_flag + 5]; lie > 10; lie--)
+    {
+      if (Pixle[hang][lie] == 1 && Pixle[hang][lie - 2] == 0)
+      {
+        white_black++;
+      }
 
-                    if(Pixle[hang][lie]==0&&Pixle[hang][lie-2]==1)
-                    {
-                        black_white++;
-                    }
-            }
+      if (Pixle[hang][lie] == 0 && Pixle[hang][lie - 2] == 1)
+      {
+        black_white++;
+      }
+    }
 
-            if(white_black>15&&black_white>15)
-            {
-                garage_count++;
-                     if(garage_count>4)
-                        {
-                            garage_flag = 1;
+    if (white_black > 15 && black_white > 15)
+    {
+      garage_count++;
+      if (garage_count > 4)
+      {
+        garage_flag = 1;
 
-                            garage_delay=1;
+        garage_delay = 1;
 
-                            shizi_flag = 0;//¹Ø±ÕÊ®×ÖÊ¶±ð
-                            lefthuandao_flag=0;
-                            leftstate=0 ;
-                          }
-              }
-     }
+        shizi_flag = 0; //ï¿½Ø±ï¿½Ê®ï¿½ï¿½Ê¶ï¿½ï¿½
+        lefthuandao_flag = 0;
+        leftstate = 0;
+      }
+    }
+  }
 
+  if (garage_flag && garage_delay > 20)
+  {
+    zebra_count++;
+    garage_count = 0;
+    garage_flag = 0;
+    garage_delay = 0;
+    chekushibie = 0;   //ï¿½Ø±Õ³ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½
+    huandaoshibie = 1; //ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½Ô²ï¿½ï¿½
+    Horizontal_line();
+  }
 
-
-
-             if(garage_flag&&garage_delay>20)
-                {
-                    zebra_count++;
-                    garage_count=0 ;
-                    garage_flag=0;
-                    garage_delay=0;
-                    chekushibie=0;//¹Ø±Õ³µ¿âÊ¶±ð
-                    huandaoshibie=1;//¿ªÆôÊ¶±ðÔ²»·
-                    Horizontal_line();
-                    }
-
-           if(zebra_count&&garage_flag)
-                            ruku_flag=1;
-
-
+  if (zebra_count && garage_flag)
+    ruku_flag = 1;
 }
-
 
 void saidaoyuansu()
 {
-    cunbaidian();
+  cunbaidian();
 
+  san_white = (cross_hangwhite[20] + cross_hangwhite[21] + cross_hangwhite[22]) / 3; //
+  zuo_white = (cross_zuowhite[20] + cross_zuowhite[21] + cross_zuowhite[22]) / 3;
+  you_white = (cross_youwhite[20] + cross_youwhite[21] + cross_youwhite[22]) / 3;
+  biaozhun = cross_hangwhite[1];
+  mid_white = cross_white[40]; //ï¿½ï¿½ï¿½ï¿½Ê®ï¿½Öºï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
+  mid_white1 = cross_white[41];
+  mid_white2 = cross_white[39];
+  shang_white = cross_hangwhite[10]; // 10
+  Right_huandao2 = cross_white[65];  //    Right_huandao2=cross_white[70];
+  Right_huandao3 = cross_white[10];
 
-    san_white = (cross_hangwhite[20]+cross_hangwhite[21]+cross_hangwhite[22])/3 ;  //
-    zuo_white = (cross_zuowhite[20]+cross_zuowhite[21]+cross_zuowhite[22])/3;
-    you_white = (cross_youwhite[20]+cross_youwhite[21]+cross_youwhite[22])/3;
-    biaozhun  =  cross_hangwhite[1];
-    mid_white =  cross_white[40];          //Çø·ÖÊ®×ÖºÍÈý²æÂ·¿Ú
-    mid_white1=cross_white[41];
-    mid_white2=cross_white[39];
-    shang_white = cross_hangwhite[10];//10
-    Right_huandao2=cross_white[65];//    Right_huandao2=cross_white[70];
-    Right_huandao3=cross_white[10];
+  if ((!lefthuandao_flag) && (!righthuandao_flag) && (!sancha_flag) && (!shizi_flag) && (!podao_flag))
+  {
+    if (chekushibie)
+      garage__dispose();
+  }
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if((!lefthuandao_flag)&&(!righthuandao_flag)&&(!sancha_flag)&&(!shizi_flag)&&(!podao_flag))
-    {
-        if(chekushibie)
-        garage__dispose();
-
-    }
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    if((!lefthuandao_flag)&&(!righthuandao_flag)&&(!sancha_flag)&&(!shizi_flag)&&(!garage_flag)&&(!podao_flag))  //ÔªËØ¶¼Ã»ÓÐÊ¶±ðµ½£¬¿ªÊ¼Ê¶±ðÔªËØ
-{
-    if(right_count>10||left_count>10)  // Á½±ßÓÐ¶ªÏßÇé¿ö ½øÈëÔªËØÊ¶±ð
+  if ((!lefthuandao_flag) && (!righthuandao_flag) && (!sancha_flag) && (!shizi_flag) && (!garage_flag) && (!podao_flag)) //Ôªï¿½Ø¶ï¿½Ã»ï¿½ï¿½Ê¶ï¿½ðµ½£ï¿½ï¿½ï¿½Ê¼Ê¶ï¿½ï¿½Ôªï¿½ï¿½
+  {
+    if (right_count > 10 || left_count > 10) // ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½Ê¶ï¿½ï¿½
     {
 
-        ////////////////////////////////////ÆÂµÀ
-             if(point_len[10]>40&&point_len[20]>60)
-             {
-                 podao_flag = 1;
-                 podaostate=1;
-                 shizishibie++;
-                 chekushibie++;
-             }
-        ////////////////////////////////////Ê®×Ö
-        if(right_lost_flag !=-1&&left_lost_flag!=-1&&mid_white>47&&right_count>10&&left_count>10)
+      ////////////////////////////////////ï¿½Âµï¿½
+      if (point_len[10] > 40 && point_len[20] > 60)
+      {
+        podao_flag = 1;
+        podaostate = 1;
+        shizishibie++;
+        chekushibie++;
+      }
+      ////////////////////////////////////Ê®ï¿½ï¿½
+      if (right_lost_flag != -1 && left_lost_flag != -1 && mid_white > 47 && right_count > 10 && left_count > 10)
+      {
+        if (shizishibie > 0)
+          shizi_flag = 1;
+      }
+
+      ////////////////////////////////////ï¿½ó»·µï¿½Ôªï¿½ï¿½
+
+      //        if((right_lost_flag==-1||right_lost_flag>45)&&left_lost_flag!=-1)  //ï¿½ï¿½ß¶ï¿½ï¿½ß£ï¿½ï¿½Ò±ß²ï¿½ï¿½ï¿½
+      //            {
+      //                 if(mid_white>48&&Right_huandao2<44&&right_count<5)//ï¿½ï¿½ï¿½ï¿½Ê®ï¿½ï¿½,Ð±Ê®ï¿½ï¿½
+      //                    {
+      //                        if(left_lost_flag<40)
+      //                        {
+      //                            if(left_count>10&&left_count<25&&Right_huandao2>34)                 //ï¿½ï¿½ï¿½ï¿½Ð¡Sï¿½ï¿½
+      //                            {
+      //                                if((right_point[20]-right_point[15]<13)&&(right_point[25]-right_point[20]<13))      // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½Ò±ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½Ç»ï¿½ï¿½ï¿½
+      //                                {
+      //                                    if(huandaoshibie>0)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½
+      //                                    {
+      //                                        lefthuandao_flag=1;                   //ï¿½ï¿½ï¿½ï¿½ï¿½ó»·µï¿½ï¿½ï¿½Ö¾Î»
+      //                                        leftstate=1 ;                          //ï¿½ó»·µï¿½×´Ì¬1
+      //                                    }
+      //                                }
+      //                            }
+      //                        }
+      //                    }
+      //             }
+
+      ////////////////////////////////////ï¿½Ò»ï¿½ï¿½ï¿½Ôªï¿½ï¿½
+
+      if ((left_lost_flag == -1 || left_lost_flag > 24) && right_lost_flag != -1) //ï¿½Ò±ß¶ï¿½ï¿½ß£ï¿½ï¿½ï¿½ß²ï¿½ï¿½ï¿½
+      {
+        if (right_lost_flag < 40)
         {
             if(shizishibie>0)
                 shizi_flag = 1;
 
         }
 
-        ////////////////////////////////////×ó»·µºÔªËØ
+        ////////////////////////////////////ï¿½ó»·µï¿½Ôªï¿½ï¿½
 
-        if((right_lost_flag==-1||right_lost_flag>45)&&left_lost_flag!=-1)  //×ó±ß¶ªÏß£¬ÓÒ±ß²»¶ª
+        if((right_lost_flag==-1||right_lost_flag>45)&&left_lost_flag!=-1)  //ï¿½ï¿½ß¶ï¿½ï¿½ß£ï¿½ï¿½Ò±ß²ï¿½ï¿½ï¿½
             {
-                 if(mid_white>48&&Right_huandao2<44&&right_count<5)//Çø±ðÊ®×Ö,Ð±Ê®×Ö
+                 if(mid_white>48&&Right_huandao2<44&&right_count<5)//ï¿½ï¿½ï¿½ï¿½Ê®ï¿½ï¿½,Ð±Ê®ï¿½ï¿½
                     {
                         if(left_lost_flag<40)
                         {
-                            if(left_count>10&&left_count<25&&Right_huandao2>34)                 //Çø·ÖÐ¡SÍä
+                            if(left_count>10&&left_count<25&&Right_huandao2>34)                 //ï¿½ï¿½ï¿½ï¿½Ð¡Sï¿½ï¿½
                             {
-                                if((right_point[20]-right_point[15]<13)&&(right_point[25]-right_point[20]<13))      // Á½µã¾àÀë £¬Ö¤Ã÷ÓÒ±ßÊÇÖ±ÏßÔòÊÇ»·µº
+                                if((right_point[20]-right_point[15]<13)&&(right_point[25]-right_point[20]<13))      // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½Ò±ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½Ç»ï¿½ï¿½ï¿½
                                 {
-                                    if(huandaoshibie>0)//¹ýÈý²æÖ®ºó¿ªÆô»·µºÊ¶±ð
+                                    if(huandaoshibie>0)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½
                                     {
-                                        lefthuandao_flag=1;                   //½øÈë×ó»·µº±êÖ¾Î»
-                                        leftstate=1 ;                          //×ó»·µº×´Ì¬1
+                                        lefthuandao_flag=1;                   //ï¿½ï¿½ï¿½ï¿½ï¿½ó»·µï¿½ï¿½ï¿½Ö¾Î»
+                                        leftstate=1 ;                          //ï¿½ó»·µï¿½×´Ì¬1
                                     }
                                 }
                             }
@@ -573,22 +589,22 @@ void saidaoyuansu()
                     }
              }
 
-        ////////////////////////////////////ÓÒ»·µºÔªËØ
+        ////////////////////////////////////ï¿½Ò»ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 
-        if((left_lost_flag==-1||left_lost_flag>24)&&right_lost_flag!=-1)  //ÓÒ±ß¶ªÏß£¬×ó±ß²»¶ª
+        if((left_lost_flag==-1||left_lost_flag>24)&&right_lost_flag!=-1)  //ï¿½Ò±ß¶ï¿½ï¿½ß£ï¿½ï¿½ï¿½ß²ï¿½ï¿½ï¿½
     {
                 if(right_lost_flag<40)
                 {
-                    if(right_count>10&&right_count<25)                 //Çø·ÖÐ¡SÍä
+                    if(right_count>10&&right_count<25)                 //ï¿½ï¿½ï¿½ï¿½Ð¡Sï¿½ï¿½
                     {
-                        if((left_point[10]-left_point[15]<11)&&(left_point[15]-left_point[20]<11))      // Á½µã¾àÀë £¬Ö¤Ã÷ÓÒ±ßÊÇÖ±ÏßÔòÊÇ»·µº
+                        if((left_point[10]-left_point[15]<11)&&(left_point[15]-left_point[20]<11))      // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½Ò±ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½Ç»ï¿½ï¿½ï¿½
                         {
                             if(huandaoshibie>0)
                             {
-                                if(left_point[20]<20&&left_point[25]<20)//·ÀÖ¹³ö³µ¿âÊ¶±ð»·µº
+                                if(left_point[20]<20&&left_point[25]<20)//ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ð»·µï¿½
                                 {
-                                  righthuandao_flag=1;                   //½øÈë×ó»·µº±êÖ¾Î»
-                                  rightstate=1 ;                          //×ó»·µº×´Ì¬1
+                                  righthuandao_flag=1;                   //ï¿½ï¿½ï¿½ï¿½ï¿½ó»·µï¿½ï¿½ï¿½Ö¾Î»
+                                  rightstate=1 ;                          //ï¿½ó»·µï¿½×´Ì¬1
                                 }
                             }
                         }
@@ -598,161 +614,167 @@ void saidaoyuansu()
 
 
 
-        //////////////////////////////////////Èý²æÂ·¿Ú
-          if(right_count>10&&left_count>10&&(mid_white<=45||mid_white1<=45||mid_white2<=45)&&shang_white<32)  //Á½±ß¶ªÏßÇÒÖÐ¼ä°×µãÊýÇø·ÖÊ®×Ö
+        //////////////////////////////////////ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
+          if(right_count>10&&left_count>10&&(mid_white<=45||mid_white1<=45||mid_white2<=45)&&shang_white<32)  //ï¿½ï¿½ï¿½ß¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½×µï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê®ï¿½ï¿½
                 {
-                    sancha_flag = 1;
-                    sanchastate = 1;
-
+                  righthuandao_flag = 1; //ï¿½ï¿½ï¿½ï¿½ï¿½ó»·µï¿½ï¿½ï¿½Ö¾Î»
+                  rightstate = 1;        //ï¿½ó»·µï¿½×´Ì¬1
                 }
-
-  }
-}
-    else{
-                shizi_flag=0;
+              }
             }
-    podao_dispose();
-    crossroads_dispose();
-    roadabout_dispose();
-    roadjunction_dispose();
+          }
+        }
+      }
 
-
+      //////////////////////////////////////ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
+      if (right_count > 10 && left_count > 10 && (mid_white <= 45 || mid_white1 <= 45 || mid_white2 <= 45) && shang_white < 32) //ï¿½ï¿½ï¿½ß¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½×µï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê®ï¿½ï¿½
+      {
+        sancha_flag = 1;
+        sanchastate = 1;
+      }
+    }
+  }
+  else
+  {
+    shizi_flag = 0;
+  }
+  podao_dispose();
+  crossroads_dispose();
+  roadabout_dispose();
+  roadjunction_dispose();
 }
 
 /************************************************************
 
-¡¾º¯ÊýÃû³Æ¡¿podao_dispose
-¡¾¹¦    ÄÜ¡¿podao´¦Àíº¯Êý
-¡¾²Î    Êý¡¿ÎÞ
-¡¾·µ »Ø Öµ¡¿ÎÞ
-¡¾Êµ    Àý¡¿podao_dispose();
-¡¾×¢ÒâÊÂÏî¡¿ÎÞ
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¡ï¿½podao_dispose
+ï¿½ï¿½ï¿½ï¿½    ï¿½Ü¡ï¿½podaoï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Öµï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½Êµ    ï¿½ï¿½ï¿½ï¿½podao_dispose();
+ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½î¡¿ï¿½ï¿½
 
 ************************************************************/
 void podao_dispose(void)
 {
-    if(podao_flag)
-       {
-            switch(podaostate)
-                    {
-                        case 1:
-                            if(point_len[10]>17&&point_len[10]<24)//Ö±µÀ¿í¶È19ºÍ59
-                                podaostate=2;
-                        break;
+  if (podao_flag)
+  {
+    switch (podaostate)
+    {
+    case 1:
+      if (point_len[10] > 17 && point_len[10] < 24) //Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½19ï¿½ï¿½59
+        podaostate = 2;
+      break;
 
+    case 2:
+    {
 
-                        case 2:
-                            {
+      podaostate = 0;
+    }
+    break;
+    }
+    if (point_len[15] > 40 && point_len[15] < 50 && point_len[20] > 40 && point_len[20] < 70)
 
-
-                                podaostate=0;
-                                }
-                          break;
-                                    }
-            if(point_len[15]>40&&point_len[15]<50&&point_len[20]>40&&point_len[20]<70)
-
-                 podao_flag=0;
-                 podaostate=0;
-
-                                   }
-           }
+      podao_flag = 0;
+    podaostate = 0;
+  }
+}
 /************************************************************
 
-¡¾º¯ÊýÃû³Æ¡¿crossroads_dispose
-¡¾¹¦    ÄÜ¡¿Ê®×Ö´¦Àíº¯Êý
-¡¾²Î    Êý¡¿ÎÞ
-¡¾·µ »Ø Öµ¡¿ÎÞ
-¡¾Êµ    Àý¡¿crossroads_dispose();
-¡¾×¢ÒâÊÂÏî¡¿ÎÞ
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¡ï¿½crossroads_dispose
+ï¿½ï¿½ï¿½ï¿½    ï¿½Ü¡ï¿½Ê®ï¿½Ö´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Öµï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½Êµ    ï¿½ï¿½ï¿½ï¿½crossroads_dispose();
+ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½î¡¿ï¿½ï¿½
 
 ************************************************************/
 
-extern int left_lost_flag ;
-extern int right_lost_flag ;
+extern int left_lost_flag;
+extern int right_lost_flag;
 
 void crossroads_dispose(void)
 {
-  int i,max=1,maxi,min=LCDW,mini;
- //Èç¹û×óÓÒ¶ªÏßÍ¬Ê±·¢ÉúÔòÊÓÎªÊ®×ÖÌõ¼þ´ï³É
-  if(shizi_flag)
+  int i, max = 1, maxi, min = LCDW, mini;
+  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¶ï¿½ï¿½ï¿½Í¬Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªÊ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  if (shizi_flag)
   {
-    if(left_lost_flag>40)//¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª×óÏÂµã
+    if (left_lost_flag > 40) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½
     {
       lx1 = 3;
       ly1 = 59;
     }
     else
     {
-      for(i=45;i>10;i--)
+      for (i = 45; i > 10; i--)
       {
-        if(left_point[i]>max&&i>left_lost_flag)
+        if (left_point[i] > max && i > left_lost_flag)
         {
-          max=left_point[i];
-          maxi=i;
+          max = left_point[i];
+          maxi = i;
         }
       }
       lx1 = max;
       ly1 = maxi;
     }
-    if(right_lost_flag>56)//¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ªÓÒÏÂµã
+    if (right_lost_flag > 56) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½
     {
-      rx1 = LCDW-3;
+      rx1 = LCDW - 3;
       ry1 = 59;
     }
     else
     {
-      for(i=45;i>10;i--)
+      for (i = 45; i > 10; i--)
       {
-        if(right_point[i]<min&&i>right_lost_flag)
+        if (right_point[i] < min && i > right_lost_flag)
         {
-          min=right_point[i];
-          mini=i;
+          min = right_point[i];
+          mini = i;
         }
       }
       rx1 = min;
       ry1 = mini;
     }
-    for(i=4;i<LCDW/2-3;i++)//¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª×óÉÏµã
+    for (i = 4; i < LCDW / 2 - 3; i++) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½
     {
-      if(above_arr[i]>above_arr[i+2]&&above_arr[i+2]>above_arr[i+4]&&above_arr[i]<left_lost_flag&&above_arr[i]<ly1)
+      if (above_arr[i] > above_arr[i + 2] && above_arr[i + 2] > above_arr[i + 4] && above_arr[i] < left_lost_flag && above_arr[i] < ly1)
       {
         lx2 = i;
         ly2 = above_arr[i];
-        connect_line(3,59,lx2,ly2);;//connect_line(lx1,ly1,lx2,ly2);
-        //mend_flag=1;
+        connect_line(3, 59, lx2, ly2);
+        ; // connect_line(lx1,ly1,lx2,ly2);
+        // mend_flag=1;
         Horizontal_line();
         break;
       }
     }
-    for(i=LCDW-3;i>LCDW/2-3;i--)//¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ªÓÒÉÏµã
+    for (i = LCDW - 3; i > LCDW / 2 - 3; i--) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½
     {
-      if(above_arr[i]>above_arr[i-2]&&above_arr[i-2]>above_arr[i-4]&&above_arr[i]<right_lost_flag&&above_arr[i]<ry1)
+      if (above_arr[i] > above_arr[i - 2] && above_arr[i - 2] > above_arr[i - 4] && above_arr[i] < right_lost_flag && above_arr[i] < ry1)
       {
         rx2 = i;
         ry2 = above_arr[i];
-        connect_line(77,59,rx2,ry2);
-        //mend_flag=1;
+        connect_line(77, 59, rx2, ry2);
+        // mend_flag=1;
         Horizontal_line();
         break;
       }
     }
   }
-//  if(right_lost_flag ==-1&&left_lost_flag==-1&&right_count<10&&left_count<10)
-//       {
-//         shizi_flag = 0;
-//
-//      }
+  //  if(right_lost_flag ==-1&&left_lost_flag==-1&&right_count<10&&left_count<10)
+  //       {
+  //         shizi_flag = 0;
+  //
+  //      }
 }
-
 
 /************************************************************
 
-¡¾º¯ÊýÃû³Æ¡¿roadabout_dispose
-¡¾¹¦    ÄÜ¡¿»·µºÔªËØ´¦Àíº¯Êý
-¡¾²Î    Êý¡¿ÎÞ
-¡¾·µ »Ø Öµ¡¿ÎÞ
-¡¾Êµ    Àý¡¿roadabout_dispose();
-¡¾×¢ÒâÊÂÏî¡¿ÎÞ
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¡ï¿½roadabout_dispose
+ï¿½ï¿½ï¿½ï¿½    ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½Ø´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Öµï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½Êµ    ï¿½ï¿½ï¿½ï¿½roadabout_dispose();
+ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½î¡¿ï¿½ï¿½
 
 ************************************************************/
 sint32 pulse=0;
@@ -813,8 +835,8 @@ void roadabout_dispose(void)
 
             switch(leftstate)
             {
-                case 1:                            //µÚÒ»´Î¶ªÏß£¬×óÏÂ½Ç¹ÕµãÔÚ40ÐÐ×óÓÒ¿ªÊ¼²¹Ïß
-                    if(30<Left_huandao1&&Left_huandao1<40)            //Ò»Ö±µ½×ó±ßÔ²»·Ïßµ½50ÐÐ£¬½øÈëµÚ¶þ½×¶Î
+                case 1:                            //ï¿½ï¿½Ò»ï¿½Î¶ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½Â½Ç¹Õµï¿½ï¿½ï¿½40ï¿½ï¿½ï¿½ï¿½ï¿½Ò¿ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
+                    if(30<Left_huandao1&&Left_huandao1<40)            //Ò»Ö±ï¿½ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½ßµï¿½50ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½×¶ï¿½
                     {
                         leftstate = 2 ;
                     }
@@ -822,7 +844,7 @@ void roadabout_dispose(void)
 
                 case 2:
 
-                        if(Left_huandao1>15&&Left_huandao1<30)            //×óÏÂ½ÅÎªÔ²»·
+                        if(Left_huandao1>15&&Left_huandao1<30)            //ï¿½ï¿½ï¿½Â½ï¿½ÎªÔ²ï¿½ï¿½
                         {
                             leftstate = 4 ;
                             huandaoshibie=0;
@@ -831,14 +853,14 @@ void roadabout_dispose(void)
                 break;
 
 
-                case 4:                                                         //»·µº
+                case 4:                                                         //ï¿½ï¿½ï¿½ï¿½
                     if(roadabout_success_in())
                     {
                         leftstate = 5 ;
                     }
                 break;
 
-                case 5:                                       //³ö»·µº²¹Ïß£¬ÓÒÏÂÀ­µ½×óÉÏ
+                case 5:                                       //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                     if(roadabout_out())
                     {
                         leftstate = 6;
@@ -852,60 +874,65 @@ void roadabout_dispose(void)
                         leftstate = 0;
                         lefthuandao_flag = 0;
 
-                    }
+    switch (leftstate)
+    {
+    case 1:                   //ï¿½ï¿½Ò»ï¿½Î¶ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½Â½Ç¹Õµï¿½ï¿½ï¿½40ï¿½ï¿½ï¿½ï¿½ï¿½Ò¿ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
+      if (Left_huandao1 < 40) //Ò»Ö±ï¿½ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½ßµï¿½50ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½×¶ï¿½
+      {
+        leftstate = 2;
+      }
+      break;
 
-            }
+    case 2:
 
+      if (Left_huandao1 > 40) //ï¿½ï¿½ï¿½Â½ï¿½ÎªÔ²ï¿½ï¿½
+      {
+        leftstate = 4;
+        huandaoshibie = 0;
+      }
 
-            if(leftstate==1)     //ÕÒ×óÇ°ºÍ×óºó¹ÕµãÏàÁ¬
-                {
-                    int max=-1,maxi,min=LCDW,mini;
-                        if(left_lost_flag>56)//¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª×óÏÂµã
-               {
-                lx4 = 3;
-                ly4 = 59;
-               }
-               else
-               {
-                 for( uint8 i=59;i>0;i--)
-                  {
-                    if(left_point[i]>max&&i>left_lost_flag)
-                    {
-                      max=left_point[i];
-                      maxi=i;
-                    }
-                 }
-                     lx4 = max;
-                     ly4 = maxi;
+      break;
 
-               }
+    case 4: //ï¿½ï¿½ï¿½ï¿½
+      if (Right_huandao1 < 15)
+      {
+        leftstate = 5;
+      }
+      break;
 
+    case 5: //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+      if (Right_huandao1 > 29)
+      {
+        leftstate = 6;
+      }
+      break;
 
-                for( uint8 i=1;i<LCDH-3;i++)//¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª×óÉÏÔ²»·µã
-            {
-             if(left_point[i]<left_point[i+1]&&left_point[i+1]>left_point[i+2]&&left_point[i+1]>lx4)
-              {
-               ly5 = i+1;
-               lx5 = left_point[i+1];
-               break;
-              }
-            }
+    case 6:
+      if (right_lost_flag == -1)
+      {
+        leftstate = 0;
+        lefthuandao_flag = 0;
+      }
+    }
 
-                         connect_line(lx4,ly4-20,lx5,ly5);
-                         Horizontal_line();
-
-
-            }
-
-            //Èë¿Ú²¹Ïß
-        if(leftstate==4)
+    if (leftstate == 1) //ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½
+    {
+      int max = -1, maxi, min = LCDW, mini;
+      if (left_lost_flag > 56) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½
+      {
+        lx4 = 3;
+        ly4 = 59;
+      }
+      else
+      {
+        for (uint8 i = 59; i > 0; i--)
         {
 
 //            if(pulse>270)
 //            {
 //                DJ_PID(0);
 //            }
-//           for(uint8 i=4;i<58;i++)//¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª×óÉÏµã
+//           for(uint8 i=4;i<58;i++)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½
 //                {
 //                     if(above_arr[i]>above_arr[i+1]&&above_arr[i+1]>above_arr[i+2]&&above_arr[i]<left_lost_flag)//
 //                          {
@@ -919,57 +946,66 @@ void roadabout_dispose(void)
 
 //            ATOM_PWM_SetDuty(ATOMSERVO1, 1700, 100);
 
-                                     //×óÉÏµãÁ¬½Óµ½ÓÒÏÂµã
+                                     //ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½Âµï¿½
       }
 
-
-
-        if(leftstate==6)
+      for (uint8 i = 1; i < LCDH - 3; i++) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½ï¿½
+      {
+        if (left_point[i] < left_point[i + 1] && left_point[i + 1] > left_point[i + 2] && left_point[i + 1] > lx4)
         {
-            int min=LCDW-2,mini;
+          ly5 = i + 1;
+          lx5 = left_point[i + 1];
+          break;
+        }
+      }
 
-         if(right_lost_flag>56)//¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ªÓÒÏÂµã
-            {
-              lx8 = LCDW-3;
-              ly8 = 59;
-            }
-    else
-            {
-              for(uint8 i=55;i>25;i--)
-              {
-                if(right_point[i]<right_point[i+1]&&i>right_lost_flag)
-                {
-                  min=right_point[i];
-                  mini=i;
-                }
-              }
-              lx8 = min;
-              ly8 = mini;
-                        }
+      connect_line(lx4, ly4 - 20, lx5, ly5);
+      Horizontal_line();
+    }
 
             connect_line(40,20,83,55);
             Horizontal_line();
         }
+      }
+      connect_line(lx7 + 15, ly7, 79, 40);
+      Horizontal_line();
+      //ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½Âµï¿½
     }
 
+    if (leftstate == 6)
+    {
+      int min = LCDW - 2, mini;
 
-     ////ÓÒ»·µº
-
-
-            if(righthuandao_flag==1)
+      if (right_lost_flag > 56) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½
+      {
+        lx8 = LCDW - 3;
+        ly8 = 59;
+      }
+      else
+      {
+        for (uint8 i = 55; i > 25; i--)
         {
+          if (right_point[i] < right_point[i + 1] && i > right_lost_flag)
+          {
+            min = right_point[i];
+            mini = i;
+          }
+        }
+        lx8 = min;
+        ly8 = mini;
+      }
 
             switch(rightstate)
             {
-                case 1:                            //µÚÒ»´Î¶ªÏß£¬ÓÒÏÂ½Ç¹ÕµãÔÚ40ÐÐ×óÓÒ¿ªÊ¼²¹Ïß
-                    if(Right_huandao1<41)            //Ò»Ö±µ½×ó±ßÔ²»·Ïßµ½50ÐÐ£¬½øÈëµÚ¶þ½×¶Î
+                case 1:                            //ï¿½ï¿½Ò»ï¿½Î¶ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½Â½Ç¹Õµï¿½ï¿½ï¿½40ï¿½ï¿½ï¿½ï¿½ï¿½Ò¿ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
+                    if(Right_huandao1<41)            //Ò»Ö±ï¿½ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½ßµï¿½50ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½×¶ï¿½
                     {
                         rightstate = 2 ;
                     }
                 break;
 
                 case 2:
-                    if(Right_huandao1>47)            //ÓÒÏÂ½ÅÎªÔ²»·
+                    if(Right_huandao1>47)            //ï¿½ï¿½ï¿½Â½ï¿½ÎªÔ²ï¿½ï¿½
                     {
                         rightstate = 4 ;
                         huandaoshibie=0;
@@ -977,14 +1013,14 @@ void roadabout_dispose(void)
                 break;
 
 
-                case 4:                                                         //»·µº
+                case 4:                                                         //ï¿½ï¿½ï¿½ï¿½
                     if(roadabout_success_in())
                     {
                         rightstate = 5 ;
                     }
                 break;
 
-                case 5:                                       //³ö»·µº²¹Ïß£¬ÓÒÏÂÀ­µ½×óÉÏ
+                case 5:                                       //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                     if(roadabout_out())
                     {
                         rightstate = 6;
@@ -992,7 +1028,7 @@ void roadabout_dispose(void)
                 break;
 
                 case 6:
-                    if(left_lost_flag==-1)          //³ö»·µº
+                    if(left_lost_flag==-1)          //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                     {
 
                         rightstate=7;
@@ -1007,13 +1043,21 @@ void roadabout_dispose(void)
                             }
                         }
 
-            }
+  ////ï¿½Ò»ï¿½ï¿½ï¿½
 
+  if (righthuandao_flag == 1)
+  {
 
-        if(rightstate==4)
-        {
+    switch (rightstate)
+    {
+    case 1:                    //ï¿½ï¿½Ò»ï¿½Î¶ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½Â½Ç¹Õµï¿½ï¿½ï¿½40ï¿½ï¿½ï¿½ï¿½ï¿½Ò¿ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
+      if (Right_huandao1 < 41) //Ò»Ö±ï¿½ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½ßµï¿½50ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½×¶ï¿½
+      {
+        rightstate = 2;
+      }
+      break;
 
-                 for(uint8 i=93;i>20;i--)//¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ªÓÒÉÏµã
+                 for(uint8 i=93;i>20;i--)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½
                     {
                      if(above_arr[i]>above_arr[i-1]&&above_arr[i-1]>above_arr[i-2]&&above_arr[i]<right_lost_flag)//
                       {
@@ -1022,102 +1066,176 @@ void roadabout_dispose(void)
                        break;
                       }
                         }
-                     connect_line(rx7-15,ry7,1,40);//ÓÒÉÏµãÁ¬½Óµ½×óÏÂµã
+                     connect_line(rx7-15,ry7,1,40);//ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½Âµï¿½
                      Horizontal_line();
 
-      }
-
-
-
-        if(rightstate==6)
-        {
-            int max=0,maxi=LCDW-1;
-
-         if(left_lost_flag>56)//¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª×óÏÂµã
-    {
-      rx8 = 3;
-      ry8 = 59;
-    }
-    else
-    {
-      for(uint8 i=59;i>0;i--)
+    case 4: //ï¿½ï¿½ï¿½ï¿½
+      if (Left_huandao1 < 28)
       {
-        if(left_point[i]>max&&i>left_lost_flag)
+        rightstate = 5;
+      }
+      break;
+
+    case 5: //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+      if (Left_huandao1 > 38)
+      {
+        rightstate = 6;
+      }
+      break;
+
+    case 6:
+      if (left_lost_flag == -1) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+      {
+
+        rightstate = 7;
+      }
+      break;
+
+    case 7:
+    {
+      if (right_lost_flag == -1)
+      {
+        rightstate = 0;
+        righthuandao_flag = 0;
+      }
+    }
+    }
+
+    if (rightstate == 4)
+    {
+
+      for (uint8 i = 79; i > 20; i--) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½
+      {
+        if (above_arr[i] > above_arr[i - 1] && above_arr[i - 1] > above_arr[i - 2] && above_arr[i] < right_lost_flag) //
         {
-          max=left_point[i];
-          maxi=i;
+          rx7 = i;
+          ry7 = above_arr[i];
+          break;
         }
       }
-      rx8 = max;
-      ry8 = maxi;
-            connect_line(30,15,1,40);
-            Horizontal_line();
-
+      connect_line(rx7 - 15, ry7, 1, 40); //ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½Âµï¿½
+      Horizontal_line();
     }
 
+    if (rightstate == 6)
+    {
+      int max = 0, maxi = LCDW - 1;
 
-
+      if (left_lost_flag > 56) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½
+      {
+        rx8 = 3;
+        ry8 = 59;
+      }
+      else
+      {
+        for (uint8 i = 59; i > 0; i--)
+        {
+          if (left_point[i] > max && i > left_lost_flag)
+          {
+            max = left_point[i];
+            maxi = i;
+          }
         }
-
-
+        rx8 = max;
+        ry8 = maxi;
+        connect_line(30, 15, 1, 40);
+        Horizontal_line();
+      }
     }
+  }
 }
-
-
-
 
 ///************************************************************
 //
-//¡¾º¯ÊýÃû³Æ¡¿roadjunction_dispose
-//¡¾¹¦    ÄÜ¡¿Èý²æÂ·¿Ú´¦Àíº¯Êý
-//¡¾²Î    Êý¡¿ÎÞ
-//¡¾·µ »Ø Öµ¡¿ÎÞ
-//¡¾Êµ    Àý¡¿roadjunction_dispose();
-//¡¾×¢ÒâÊÂÏî¡¿ÎÞ
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¡ï¿½roadjunction_dispose
+//ï¿½ï¿½ï¿½ï¿½    ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½Ú´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ï¿½ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Öµï¿½ï¿½ï¿½ï¿½
+//ï¿½ï¿½Êµ    ï¿½ï¿½ï¿½ï¿½roadjunction_dispose();
+//ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½î¡¿ï¿½ï¿½
 
 //************************************************************/
 
 void roadjunction_dispose(void)
 {
 
-    if(sancha_flag)
+  if (sancha_flag)
+  {
+
+    int max = 1, maxi, min = LCDW, min_0 = 1, mini;
+    switch (sanchastate)
     {
+      //            case 1:
+      //            if(shang_white<38)//mid_white<38
+      //            {
+      //             sanchastate = 2;
+      //            }
+      //            break;
 
-        int max=1,maxi,min=LCDW,min_0=1,mini;
-        switch(sanchastate)
-        {
-//            case 1:
-//            if(shang_white<38)//mid_white<38
-//            {
-//             sanchastate = 2;
-//            }
-//            break;
-
-
-
-            case 1:
-            if(right_lost_flag==-1||left_lost_flag==-1)
-            {
-                sanchastate = 4;
-            }
-            break;
-
-            case 4:
-            if(mid_white>48)
-          {
-             sanchastate = 0;
-             sancha_flag = 0;
-             sancha_count++;
-          }
-            break;
-
+    case 1:
+      if (right_lost_flag == -1 || left_lost_flag == -1)
+      {
+        sanchastate = 4;
       }
+      break;
 
-        if(sanchastate==1)  //  Ê¶±ðµ½Èý²æÂ·¿Ú£¬ÓÒÏÂ½ÇÁ¬µ½ÓÒÉÏ¹Õµã
+    case 4:
+      if (mid_white > 48)
+      {
+        sanchastate = 0;
+        sancha_flag = 0;
+        sancha_count++;
+      }
+      break;
+    }
+
+    if (sanchastate == 1) //  Ê¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½Ú£ï¿½ï¿½ï¿½ï¿½Â½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¹Õµï¿½
+    {
+      if (sancha_count < 2)
+      {
+        if (right_lost_flag > 55) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½
         {
-            if(sancha_count<2)
+          lx11 = LCDW - 3;
+          ly11 = 59;
+        }
+        else
+        {
+          for (uint8 i = 59; i > 35; i--)
+          {
+            if (right_point[i] < min && i > right_lost_flag)
             {
-                            if(right_lost_flag>55)//¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ªÓÒÏÂµã
+              min = right_point[i];
+              mini = i;
+            }
+          }
+          lx11 = min;
+          ly11 = mini;
+        }
+
+        for (uint8 i = 40; i < 75; i++) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½
+        {
+          if (above_arr[i - 4] < above_arr[i + 1] && above_arr[i + 1] > above_arr[i + 5] && above_arr[i + 1] < ly11)
+          {
+            lx12 = i + 1;
+            ly12 = above_arr[i + 1];
+            break;
+          }
+        }
+      }
+      if (sancha_count >= 2)
+      {
+        if (left_lost_flag > 55) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½
+        {
+          lx11 = 3;
+          ly11 = 59;
+        }
+        else
+        {
+          for (uint8 i = 59; i > 35; i--)
+          {
+            if (left_point[i] > min_0 && i > left_lost_flag)
+            {
+                            if(right_lost_flag>55)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½
                              {
                                   lx11 = LCDW-3;
                                   ly11 = 59;
@@ -1136,7 +1254,7 @@ void roadjunction_dispose(void)
                               ly11 = mini;
                                                                      }
 
-                            for(uint8 i=40;i<75;i++)//¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ªÉÏµã
+                            for(uint8 i=40;i<75;i++)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½
                                   {
                                       if(above_arr[i-4]<above_arr[i+1]&&above_arr[i+1]>above_arr[i+5]&&above_arr[i+1]<ly11)
                                           {
@@ -1147,7 +1265,7 @@ void roadjunction_dispose(void)
                                                                                           }
                                                                                                     }
             if(sancha_count>=2)
-            {                     if(left_lost_flag>55)//¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ªÓÒÏÂµã
+            {                     if(left_lost_flag>55)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½
                                              {
                                                   lx11 = 3;
                                                   ly11 = 59;
@@ -1166,7 +1284,7 @@ void roadjunction_dispose(void)
                                               ly11 = mini;
                                                                                      }
 
-                                            for(uint8 i=20;i<65;i++)//¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ªÉÏµã
+                                            for(uint8 i=20;i<65;i++)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½
                                                   {
                                                       if(above_arr[i-4]<above_arr[i+1]&&above_arr[i+1]>above_arr[i+6]&&above_arr[i+1]<ly11)
                                                           {

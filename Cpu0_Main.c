@@ -1,61 +1,55 @@
 /*LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
 
-¡¾dev.env.¡¿AURIX Development Studio1.2.2¼°ÒÔÉÏ°æ±¾
-¡¾Target ¡¿ TC264DA/TC264D
-¡¾Crystal¡¿ 20.000Mhz
-¡¾SYS PLL¡¿ 200MHz
+ï¿½ï¿½dev.env.ï¿½ï¿½AURIX Development Studio1.2.2ï¿½ï¿½ï¿½ï¿½ï¿½Ï°æ±¾
+ï¿½ï¿½Target ï¿½ï¿½ TC264DA/TC264D
+ï¿½ï¿½Crystalï¿½ï¿½ 20.000Mhz
+ï¿½ï¿½SYS PLLï¿½ï¿½ 200MHz
 ________________________________________________________________
-»ùÓÚiLLD_1_0_1_11_0µ×²ã³ÌÐò,
+ï¿½ï¿½ï¿½ï¿½iLLD_1_0_1_11_0ï¿½×²ï¿½ï¿½ï¿½ï¿½,
 
-Ê¹ÓÃÀý³ÌµÄÊ±ºò£¬½¨Òé²ÉÓÃÃ»ÓÐ¿Õ¸ñµÄÓ¢ÎÄÂ·¾¶£¬
-³ýÁËCIFÎªTC264DA¶ÀÓÐÍâ£¬ÆäËüµÄ´úÂë¼æÈÝTC264D
-±¾¿âÄ¬ÈÏ³õÊ¼»¯ÁËEMEM£º512K£¬Èç¹ûÓÃ»§Ê¹ÓÃTC264D£¬×¢ÊÍµôEMEM_InitConfig()³õÊ¼»¯º¯Êý¡£
-¹¤³ÌÏÂ\Libraries\iLLD\TC26B\Tricore\Cpu\CStart\IfxCpu_CStart0.cµÚ164ÐÐ×óÓÒ¡£
+Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½Ê±ï¿½ò£¬½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð¿Õ¸ï¿½ï¿½Ó¢ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½CIFÎªTC264DAï¿½ï¿½ï¿½ï¿½ï¿½â£¬ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½TC264D
+ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½Ï³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½EMEMï¿½ï¿½512Kï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ê¹ï¿½ï¿½TC264Dï¿½ï¿½×¢ï¿½Íµï¿½EMEM_InitConfig()ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\Libraries\iLLD\TC26B\Tricore\Cpu\CStart\IfxCpu_CStart0.cï¿½ï¿½164ï¿½ï¿½ï¿½ï¿½ï¿½Ò¡ï¿½
 QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ*/
-#include "..\Driver\include.h"//¸÷¸öÄ£¿éµÄÍ·ÎÄ¼þ
-
+#include "..\Driver\include.h" //ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½Í·ï¿½Ä¼ï¿½
 
 /***************************END**********************************/
-App_Cpu0 g_AppCpu0; /**< \brief CPU 0 global data */
-IfxCpu_mutexLock mutexCpu0InitIsOk = 1;   /** CPU0 ³õÊ¼»¯Íê³É±êÖ¾Î»  */
+App_Cpu0 g_AppCpu0;                     /**< \brief CPU 0 global data */
+IfxCpu_mutexLock mutexCpu0InitIsOk = 1; /** CPU0 ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½É±ï¿½Ö¾Î»  */
 
+volatile char mutexCpu0TFTIsOk = 0;
 
-
-
-volatile char mutexCpu0TFTIsOk=0;
-
-/*****************Ö´ÐÐ»ú¹¹×ÛºÏ¿ØÖÆº¯Êý*********************/
-void CAR_Drive_duty(void)           //Ö´ÐÐ»ú¹¹×ÛºÏ¿ØÖÆº¯Êý
+/*****************Ö´ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ÛºÏ¿ï¿½ï¿½Æºï¿½ï¿½ï¿½*********************/
+void CAR_Drive_duty(void) //Ö´ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ÛºÏ¿ï¿½ï¿½Æºï¿½ï¿½ï¿½
 {
 
 
   if(KEY_Read(DSW0))               //
-    DJ_PID(mid_point[50]);  //Õý³£¶æ»ú¿ØÖÆ
+    DJ_PID(mid_point[50]);  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   else;
 
-  if(podao_flag)
-      DJ_PID(mid_point[30]);
+    if (podao_flag)
+        DJ_PID(mid_point[30]);
 
-  if(garage_flag)
-      DJ_PID(40);
+    if (garage_flag)
+        DJ_PID(40);
 
-
-  /************ËÙ¶È¿ØÖÆ**************/
-  if(0)
-  speed_need=speed_need_Boost;
-  else
-  speed_need=14;//speed_need_normal;       //ÉÏµçÊ±ËÙ¶ÈÄ¬ÈÏÎª0£¬°´ÏÂkey0ºóÖ´ÐÐËÙ¶Èµ²Î»Ñ¡Ôñº¯Êý  void speed_SW
+    /************ï¿½Ù¶È¿ï¿½ï¿½ï¿½**************/
+    if (0)
+        speed_need = speed_need_Boost;
+    else
+        speed_need = 14; // speed_need_normal;       //ï¿½Ïµï¿½Ê±ï¿½Ù¶ï¿½Ä¬ï¿½ï¿½Îª0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½key0ï¿½ï¿½Ö´ï¿½ï¿½ï¿½Ù¶Èµï¿½Î»Ñ¡ï¿½ï¿½ï¿½ï¿½  void speed_SW
 
     speed_PID(speed_need);
-
 }
 
-void CAR_Drive_duty_2(int point)           //Ö´ÐÐ»ú¹¹×ÛºÏ¿ØÖÆº¯Êý
+void CAR_Drive_duty_2(int point)           //Ö´ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ÛºÏ¿ï¿½ï¿½Æºï¿½ï¿½ï¿½
 {
 
 
   if(KEY_Read(DSW0))               //
-    DJ_PID(mid_point[point]);  //Õý³£¶æ»ú¿ØÖÆ
+    DJ_PID(mid_point[point]);  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   else;
 
   if(podao_flag)
@@ -65,11 +59,11 @@ void CAR_Drive_duty_2(int point)           //Ö´ÐÐ»ú¹¹×ÛºÏ¿ØÖÆº¯Êý
       DJ_PID(40);
 
 
-  /************ËÙ¶È¿ØÖÆ**************/
+  /************ï¿½Ù¶È¿ï¿½ï¿½ï¿½**************/
   if(0)
   speed_need=speed_need_Boost;
   else
-  speed_need=14;//speed_need_normal;       //ÉÏµçÊ±ËÙ¶ÈÄ¬ÈÏÎª0£¬°´ÏÂkey0ºóÖ´ÐÐËÙ¶Èµ²Î»Ñ¡Ôñº¯Êý  void speed_SW
+  speed_need=14;//speed_need_normal;       //ï¿½Ïµï¿½Ê±ï¿½Ù¶ï¿½Ä¬ï¿½ï¿½Îª0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½key0ï¿½ï¿½Ö´ï¿½ï¿½ï¿½Ù¶Èµï¿½Î»Ñ¡ï¿½ï¿½ï¿½ï¿½  void speed_SW
 
     speed_PID(speed_need);
 
@@ -79,118 +73,116 @@ void CAR_Drive_duty_2(int point)           //Ö´ÐÐ»ú¹¹×ÛºÏ¿ØÖÆº¯Êý
 
 
 /*************************************************************************
-*  º¯ÊýÃû³Æ£ºint core0_main (void)
-*  ¹¦ÄÜËµÃ÷£ºCPU0Ö÷º¯Êý
-*  ²ÎÊýËµÃ÷£ºÎÞ
-*  º¯Êý·µ»Ø£ºÎÞ
-*  ÐÞ¸ÄÊ±¼ä£º2020Äê3ÔÂ10ÈÕ
-*  ±¸    ×¢£º
-*************************************************************************/
-int left_lost_flag ;
-int right_lost_flag ;
+ *  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½int core0_main (void)
+ *  ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½CPU0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ *  ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ *  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø£ï¿½ï¿½ï¿½
+ *  ï¿½Þ¸ï¿½Ê±ï¿½ä£º2020ï¿½ï¿½3ï¿½ï¿½10ï¿½ï¿½
+ *  ï¿½ï¿½    ×¢ï¿½ï¿½
+ *************************************************************************/
+int left_lost_flag;
+int right_lost_flag;
 
-
-int core0_main (void)
+int core0_main(void)
 {
-    //¹Ø±ÕCPU×ÜÖÐ¶Ï
+    //ï¿½Ø±ï¿½CPUï¿½ï¿½ï¿½Ð¶ï¿½
     IfxCpu_disableInterrupts();
 
-    //¹Ø±Õ¿´ÃÅ¹·£¬Èç¹û²»ÉèÖÃ¿´ÃÅ¹·Î¹¹·ÐèÒª¹Ø±Õ
+    //ï¿½Ø±Õ¿ï¿½ï¿½Å¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½Å¹ï¿½Î¹ï¿½ï¿½ï¿½ï¿½Òªï¿½Ø±ï¿½
     IfxScuWdt_disableCpuWatchdog(IfxScuWdt_getCpuWatchdogPassword());
     IfxScuWdt_disableSafetyWatchdog(IfxScuWdt_getSafetyWatchdogPassword());
 
-    //¶ÁÈ¡×ÜÏßÆµÂÊ
+    //ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½
     g_AppCpu0.info.pllFreq = IfxScuCcu_getPllFrequency();
     g_AppCpu0.info.cpuFreq = IfxScuCcu_getCpuFrequency(IfxCpu_getCoreIndex());
     g_AppCpu0.info.sysFreq = IfxScuCcu_getSpbFrequency();
     g_AppCpu0.info.stmFreq = IfxStm_getFrequency(&MODULE_STM0);
 
-    //´®¿ÚP14.0¹Ü½ÅÊä³ö,P14.1ÊäÈë£¬²¨ÌØÂÊ115200
-    UART_InitConfig(UART0_RX_P14_1,UART0_TX_P14_0, 115200);
+    //ï¿½ï¿½ï¿½ï¿½P14.0ï¿½Ü½ï¿½ï¿½ï¿½ï¿½,P14.1ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½115200
+    UART_InitConfig(UART0_RX_P14_1, UART0_TX_P14_0, 115200);
     TFTSPI_Init(0);
-    TFTSPI_CLS(u16BLACK);                     //OLEDÇåÆÁ
-    TFTSPI_P16x16Str(0,0,(unsigned char*)"±±¾©ÁúÇñÖÇÄÜ¿Æ¼¼",u16RED,u16BLUE);// ×Ö·û´®ÏÔÊ¾
-    CAMERA_Init(50);                //ÉãÏñÍ·³õÊ¼»¯
+    TFTSPI_CLS(u16BLACK);                                                         // OLEDï¿½ï¿½ï¿½ï¿½
+    TFTSPI_P16x16Str(0, 0, (unsigned char *)"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü¿Æ¼ï¿½", u16RED, u16BLUE); // ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾
+    CAMERA_Init(50);                                                              //ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½Ê¼ï¿½ï¿½
     MotorInit();
-    CAMERA_Init(50);                //ÉãÏñÍ·³õÊ¼»¯
-    ATOM_PWM_InitConfig(ATOMSERVO1, DJ_midpoint, 100);//¶æ»úÆµÂÊÎª100HZ£¬³õÊ¼ÖµÎª1.5msÖÐÖµ
+    CAMERA_Init(50);                                   //ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½Ê¼ï¿½ï¿½
+    ATOM_PWM_InitConfig(ATOMSERVO1, DJ_midpoint, 100); //ï¿½ï¿½ï¿½Æµï¿½ï¿½Îª100HZï¿½ï¿½ï¿½ï¿½Ê¼ÖµÎª1.5msï¿½ï¿½Öµ
     ENC_InitConfig(ENC2_InPut_P33_7, ENC2_Dir_P33_6);
-    //ENC_InitConfig(ENC6_InPut_P20_3, ENC6_Dir_P20_0);//±àÂëÆ÷4³õÊ¼»¯
-    //LEDµÆËùÓÃP10.6ºÍP10.5³õÊ¼»¯
+    // ENC_InitConfig(ENC6_InPut_P20_3, ENC6_Dir_P20_0);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½4ï¿½ï¿½Ê¼ï¿½ï¿½
+    // LEDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½P10.6ï¿½ï¿½P10.5ï¿½ï¿½Ê¼ï¿½ï¿½
     GPIO_LED_Init();
-    //¿ªÆôCPU×ÜÖÐ¶Ï
+    //ï¿½ï¿½ï¿½ï¿½CPUï¿½ï¿½ï¿½Ð¶ï¿½
     IfxCpu_enableInterrupts();
 
+    // adcï¿½ï¿½Ê¼ï¿½ï¿½
+    // ADC_InitConfig(ADC0, 80000); //ï¿½ï¿½Ê¼ï¿½ï¿½
+    // ADC_InitConfig(ADC1, 80000);
+    // ADC_InitConfig(ADC2, 80000);
+    // ADC_InitConfig(ADC3, 80000);
+    // ADC_InitConfig(ADC4, 80000);
+    // ADC_InitConfig(ADC5, 80000);
+    // ADC_InitConfig(ADC6, 80000);
+    // ADC_InitConfig(ADC7, 80000);
 
-    //adc³õÊ¼»¯
-    //ADC_InitConfig(ADC0, 80000); //³õÊ¼»¯
-    //ADC_InitConfig(ADC1, 80000);
-    //ADC_InitConfig(ADC2, 80000);
-    //ADC_InitConfig(ADC3, 80000);
-    //ADC_InitConfig(ADC4, 80000);
-    //ADC_InitConfig(ADC5, 80000);
-    //ADC_InitConfig(ADC6, 80000);
-    //ADC_InitConfig(ADC7, 80000);
+    // ATOM_PWM_InitConfig(IfxGtm_ATOM2_4_TOUT30_P33_8_OUT, 0,4000);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
 
+    // STM_InitConfig(STM1, STM_Channel_0, 50000);
 
-   //ATOM_PWM_InitConfig(IfxGtm_ATOM2_4_TOUT30_P33_8_OUT, 0,4000);//·äÃùÆ÷³õÊ¼»¯
+    left_point[img_y_max] = 0;
+    right_point[img_y_max] = 80;
 
-   //STM_InitConfig(STM1, STM_Channel_0, 50000);
-
-    left_point[img_y_max]=0;
-    right_point[img_y_max]=80;
-
-    //Í¨ÖªCPU1   CPU0³õÊ¼»¯Íê³É
+    //Í¨ÖªCPU1   CPU0ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½
     IfxCpu_releaseMutex(&mutexCpu0InitIsOk);
-    mutexCpu0TFTIsOk=0;
-    start_flag=0;
+    mutexCpu0TFTIsOk = 0;
+    start_flag = 0;
 
     TFTSPI_P8X16Str(2, 0, "LQ 9V034 Car", u16RED, u16GREEN);
     TFTSPI_P8X16Str(1, 2, "K2 Show Video77", u16RED, u16GREEN);
     delayms(500);
-    TFTSPI_CLS(u16BLUE); // ÇåÆÁ
+    TFTSPI_CLS(u16BLUE); // ï¿½ï¿½ï¿½ï¿½
 
-    mutexCpu0TFTIsOk = 1;                // CPU1£º 0Õ¼ÓÃ/1ÊÍ·Å TFT
-  //  LQ_ATom_Servo_2chPWM();
- //  LQ_GPT_4mini512TFT();
-   // Test_CAMERA();
-//    TestEncoder();
-//    LQ_Atom_Motor_8chPWM();
-    while(1)//Ö÷Ñ­»·
+    mutexCpu0TFTIsOk = 1; // CPU1ï¿½ï¿½ 0Õ¼ï¿½ï¿½/1ï¿½Í·ï¿½ TFT
+                          //  LQ_ATom_Servo_2chPWM();
+                          //  LQ_GPT_4mini512TFT();
+                          // Test_CAMERA();
+                          //    TestEncoder();
+                          //    LQ_Atom_Motor_8chPWM();
+    while (1)             //ï¿½ï¿½Ñ­ï¿½ï¿½
     {
 
-        if(Camera_Flag == 2)                       //ÉãÏñÍ·³¡ÖÐ¶Ï
+        if(Camera_Flag == 2)                       //ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½Ð¶ï¿½
            {
-              FEED_COUNT();                             //±àÂëÆ÷½áËã
+              FEED_COUNT();                             //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
               Camera_Flag = 0;
-             /* ÌáÈ¡²¿·ÖÊ¹ÓÃµÄÊý¾Ý */
+             /* ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ */
               Get_Use_Image();
-              Get_01_Value(0);                          // ¶þÖµ»¯
-              //TFTSPI_BinRoad(0, 0, LCDH, LCDW, (unsigned char*)Pixle);        // TFT¶¯Ì¬ÏÔÊ¾ÉãÏñÍ·Í¼Ïñ
-           //   Get_ADC();                                   //µç´Å²É¼¯
+              Get_01_Value(0);                          // ï¿½ï¿½Öµï¿½ï¿½
+              //TFTSPI_BinRoad(0, 0, LCDH, LCDW, (unsigned char*)Pixle);        // TFTï¿½ï¿½Ì¬ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Í·Í¼ï¿½ï¿½
+           //   Get_ADC();                                   //ï¿½ï¿½Å²É¼ï¿½
 
-              Horizontal_line();                         //Ë®Æ½É¨Ïß£¬ÕÒ±ß½çÓëÖÐÏß
-              portrait_line();                             //×ÝÏòÉ¨Ïß£¬ÕÒÌØÊâÔªËØµÄ¹Õµã
+              Horizontal_line();                         //Ë®Æ½É¨ï¿½ß£ï¿½ï¿½Ò±ß½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+              portrait_line();                             //ï¿½ï¿½ï¿½ï¿½É¨ï¿½ß£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ØµÄ¹Õµï¿½
 
-              if(start_flag==0)//ÆðÅÜ±êÖ¾Î»
+              if(start_flag==0)//ï¿½ï¿½ï¿½Ü±ï¿½Ö¾Î»
                   {
 //                              OutInGarage (0, 1);
                               start_flag=1;
-                              huandaoshibie++;    //¿ªÆô»·µºÊ¶±ð
+                              huandaoshibie++;    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½
                   }
 
-              saidaokuandu();                       //¼ÆËã25µ½10ÐÐ¿í¶È
+              saidaokuandu();                       //ï¿½ï¿½ï¿½ï¿½25ï¿½ï¿½10ï¿½Ð¿ï¿½ï¿½ï¿½
 
               left_lost_flag=Lost_line_left();
-              right_lost_flag=Lost_line_right();//ÅÐ¶ÏÓÐÐ§ÐÐ¶ªÏß
+              right_lost_flag=Lost_line_right();//ï¿½Ð¶ï¿½ï¿½ï¿½Ð§ï¿½Ð¶ï¿½ï¿½ï¿½
 
-              misslinecount();                           //¶ªÏßÐÐÀÛ¼Ó
+              misslinecount();                           //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Û¼ï¿½
 
-              saidaoyuansu();                          //ÈüµÀÔªËØÅÐ¶Ï£¬´¦Àí
+              saidaoyuansu();                          //ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½ï¿½Ð¶Ï£ï¿½ï¿½ï¿½ï¿½ï¿½
 
 
+            saidaokuandu(); //ï¿½ï¿½ï¿½ï¿½25ï¿½ï¿½10ï¿½Ð¿ï¿½ï¿½ï¿½
 
-           //  for(uint8 i=59;i>0;i--)              //oledÏÔÊ¾ÖÐÏß
+           //  for(uint8 i=59;i>0;i--)              //oledï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
            //  Pixle[i][(mid_point[i])]=0;
                if(lefthuandao_flag)
                {
@@ -223,25 +215,27 @@ int core0_main (void)
 
                }
                else{
-                  CAR_Drive_duty();      }         //¶æ»ú¿ØÖÆÓëµç»ú¿ØÖÆ£¨×ªÏòÓëËÙ¶È£©
+                  CAR_Drive_duty();      }         //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½Ù¶È£ï¿½
 
-               GUI_Duty();                           //µ÷ÊÔ½çÃæ
+               GUI_Duty();                           //ï¿½ï¿½ï¿½Ô½ï¿½ï¿½ï¿½
 
+            saidaoyuansu(); //ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½ï¿½Ð¶Ï£ï¿½ï¿½ï¿½ï¿½ï¿½
 
-                  if(garage_delay)
-                      garage_delay++;           //Ê¶±ð°ßÂíÏßÑÓ³Ù±äÁ¿£¬·ÀÖ¹ÖØ¸´Ê¶±ð°ßÂíÏß
+            //  for(uint8 i=59;i>0;i--)              //oledï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
+            //  Pixle[i][(mid_point[i])]=0;
 
+            CAR_Drive_duty(); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½Ù¶È£ï¿½
+            GUI_Duty();       //ï¿½ï¿½ï¿½Ô½ï¿½ï¿½ï¿½
 
-                  if(ruku_flag)
-                      OutInGarage (1, 1);           //Èë¿â
+            if (garage_delay)
+                garage_delay++; //Ê¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó³Ù±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¹ï¿½Ø¸ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-              /* Çå³ýÉãÏñÍ·²É¼¯Íê³É±êÖ¾Î»  Èç¹û²»Çå³ý£¬Ôò²»»áÔÙ´Î²É¼¯Êý¾Ý */
-            }
+            if (ruku_flag)
+                OutInGarage(1, 1); //ï¿½ï¿½ï¿½
 
+            /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½É¼ï¿½ï¿½ï¿½É±ï¿½Ö¾Î»  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò²»»ï¿½ï¿½Ù´Î²É¼ï¿½ï¿½ï¿½ï¿½ï¿½ */
+        }
 
-        LED_Ctrl(LED1,RVS);        //µçÆ½·­×ª,LEDÉÁË¸
+        LED_Ctrl(LED1, RVS); //ï¿½ï¿½Æ½ï¿½ï¿½×ª,LEDï¿½ï¿½Ë¸
     }
 }
-
-
-
