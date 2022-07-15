@@ -23,7 +23,7 @@ void DJ_PID(unsigned char midpoint_in)  //¶æ»úPD
 
 
 
-      san=midpoint_in-35;
+      san=midpoint_in-40;
 
 
       error = san;

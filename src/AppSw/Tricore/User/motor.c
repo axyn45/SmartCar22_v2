@@ -128,20 +128,20 @@ void speed_PID(sint8 speed_in)
   last_error_1=speed_error;             //¼ÇÂ¼ÉÏ´ÎÎó²î
 
   /*******Êä³öÏŞ·ù Î£ÏÕ£¬Îó¶¯£¡*********/
-  if(speed_out>2500)
-     speed_out=2500;
-   if(speed_out<-2500)
-     speed_out=-2500;
+  if(speed_out>1500)
+     speed_out=1500;
+   if(speed_out<-1500)
+     speed_out=-1500;
 
-
-   if(speed_out<0)
-   {
-       MotorCtrl4w(-speed_out,-speed_out,-speed_out,-speed_out);
-   }
-   else
-   {
-       MotorCtrl4w(speed_out,speed_out,speed_out,speed_out);
-   }
+   MotorCtrl4w(1500,1500,1500,1500);
+//   if(speed_out<0)
+//   {
+//       MotorCtrl4w(-speed_out,-speed_out,-speed_out,-speed_out);
+//   }
+//   else
+//   {
+//       MotorCtrl4w(speed_out,speed_out,speed_out,speed_out);
+//   }
 
 }
 

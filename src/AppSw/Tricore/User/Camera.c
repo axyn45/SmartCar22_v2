@@ -1,5 +1,6 @@
 #include"Camera.h"
 #include <include.h>
+#include<stdbool.h>
 /***********************摄像头有关参数***************************/
 /*调控参量*/
 uint8 img_y_max=29;             //扫描纵坐标最近值
@@ -551,26 +552,26 @@ void saidaoyuansu()
 
         ////////////////////////////////////左环岛元素
 
-//        if((right_lost_flag==-1||right_lost_flag>45)&&left_lost_flag!=-1)  //左边丢线，右边不丢
-//            {
-//                 if(mid_white>48&&Right_huandao2<44&&right_count<5)//区别十字,斜十字
-//                    {
-//                        if(left_lost_flag<40)
-//                        {
-//                            if(left_count>10&&left_count<25&&Right_huandao2>34)                 //区分小S弯
-//                            {
-//                                if((right_point[20]-right_point[15]<13)&&(right_point[25]-right_point[20]<13))      // 两点距离 ，证明右边是直线则是环岛
-//                                {
-//                                    if(huandaoshibie>0)//过三叉之后开启环岛识别
-//                                    {
-//                                        lefthuandao_flag=1;                   //进入左环岛标志位
-//                                        leftstate=1 ;                          //左环岛状态1
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//             }
+        if((right_lost_flag==-1||right_lost_flag>45)&&left_lost_flag!=-1)  //左边丢线，右边不丢
+            {
+                 if(mid_white>48&&Right_huandao2<44&&right_count<5)//区别十字,斜十字
+                    {
+                        if(left_lost_flag<40)
+                        {
+                            if(left_count>10&&left_count<25&&Right_huandao2>34)                 //区分小S弯
+                            {
+                                if((right_point[20]-right_point[15]<13)&&(right_point[25]-right_point[20]<13))      // 两点距离 ，证明右边是直线则是环岛
+                                {
+                                    if(huandaoshibie>0)//过三叉之后开启环岛识别
+                                    {
+                                        lefthuandao_flag=1;                   //进入左环岛标志位
+                                        leftstate=1 ;                          //左环岛状态1
+                                    }
+                                }
+                            }
+                        }
+                    }
+             }
 
         ////////////////////////////////////右环岛元素
 
@@ -754,10 +755,50 @@ void crossroads_dispose(void)
 【注意事项】无
 
 ************************************************************/
+sint32 pulse=0;
+bool roadabout_success_in()
+{
 
+         if (leftstate==4)
+         {
+             Feed_speed=ENC_GetCounter(ENC2_InPut_P33_7);
+             pulse=Feed_speed+pulse;
+             if(pulse>430)
+             {
+                 pulse=0;
+                 return true;
+             }
+         }
+        return false;
+}
 
-
-
+bool roadabout_out()
+{
+    if (leftstate==5)
+    {
+        Feed_speed=ENC_GetCounter(ENC2_InPut_P33_7);
+        pulse=Feed_speed+pulse;
+        if(pulse>360)
+        {
+            pulse=0;
+            return true;
+        }
+    }
+   return false;
+}
+bool roadabout_success_out()
+{    if (leftstate==6)
+{
+    Feed_speed=ENC_GetCounter(ENC2_InPut_P33_7);
+    pulse=Feed_speed+pulse;
+    if(pulse>230)
+    {
+        pulse=0;
+        return true;
+    }
+}
+        return false;
+}
 void roadabout_dispose(void)
 {
       Left_huandao1 = cross_white[2];
@@ -773,7 +814,7 @@ void roadabout_dispose(void)
             switch(leftstate)
             {
                 case 1:                            //第一次丢线，左下角拐点在40行左右开始补线
-                    if(Left_huandao1<40)            //一直到左边圆环线到50行，进入第二阶段
+                    if(30<Left_huandao1&&Left_huandao1<40)            //一直到左边圆环线到50行，进入第二阶段
                     {
                         leftstate = 2 ;
                     }
@@ -781,7 +822,7 @@ void roadabout_dispose(void)
 
                 case 2:
 
-                        if(Left_huandao1>40)            //左下脚为圆环
+                        if(Left_huandao1>15&&Left_huandao1<30)            //左下脚为圆环
                         {
                             leftstate = 4 ;
                             huandaoshibie=0;
@@ -791,14 +832,14 @@ void roadabout_dispose(void)
 
 
                 case 4:                                                         //环岛
-                    if(Right_huandao1<15)
+                    if(roadabout_success_in())
                     {
                         leftstate = 5 ;
                     }
                 break;
 
                 case 5:                                       //出环岛补线，右下拉到左上
-                    if(Right_huandao1>29)
+                    if(roadabout_out())
                     {
                         leftstate = 6;
 
@@ -806,7 +847,7 @@ void roadabout_dispose(void)
                 break;
 
                 case 6:
-                    if(right_lost_flag==-1)
+                    if(roadabout_success_out())
                     {
                         leftstate = 0;
                         lefthuandao_flag = 0;
@@ -859,17 +900,25 @@ void roadabout_dispose(void)
             //入口补线
         if(leftstate==4)
         {
-           for(uint8 i=4;i<58;i++)//————————————————————————————————————————————————左上点
-                {
-                     if(above_arr[i]>above_arr[i+1]&&above_arr[i+1]>above_arr[i+2]&&above_arr[i]<left_lost_flag)//
-                          {
-                           lx7 = i;
-                           ly7 = above_arr[i];
-                           break;
-                          }
-                    }
-                     connect_line(lx7+15,ly7,79,40);
-                     Horizontal_line();
+
+//            if(pulse>270)
+//            {
+//                DJ_PID(0);
+//            }
+//           for(uint8 i=4;i<58;i++)//————————————————————————————————————————————————左上点
+//                {
+//                     if(above_arr[i]>above_arr[i+1]&&above_arr[i+1]>above_arr[i+2]&&above_arr[i]<left_lost_flag)//
+//                          {
+//                           lx7 = i;
+//                           ly7 = above_arr[i];
+//                           break;
+//                          }
+//                    }
+//                     connect_line(lx7+15,ly7,93,40);
+//                     Horizontal_line();
+
+//            ATOM_PWM_SetDuty(ATOMSERVO1, 1700, 100);
+
                                      //左上点连接到右下点
       }
 
@@ -898,7 +947,7 @@ void roadabout_dispose(void)
               ly8 = mini;
                         }
 
-            connect_line(40,20,70,55);
+            connect_line(40,20,83,55);
             Horizontal_line();
         }
     }
@@ -929,14 +978,14 @@ void roadabout_dispose(void)
 
 
                 case 4:                                                         //环岛
-                    if(Left_huandao1<28)
+                    if(roadabout_success_in())
                     {
                         rightstate = 5 ;
                     }
                 break;
 
                 case 5:                                       //出环岛补线，右下拉到左上
-                    if(Left_huandao1>38)
+                    if(roadabout_out())
                     {
                         rightstate = 6;
                     }
@@ -964,7 +1013,7 @@ void roadabout_dispose(void)
         if(rightstate==4)
         {
 
-                 for(uint8 i=79;i>20;i--)//————————————————————————————————————————————————右上点
+                 for(uint8 i=93;i>20;i--)//————————————————————————————————————————————————右上点
                     {
                      if(above_arr[i]>above_arr[i-1]&&above_arr[i-1]>above_arr[i-2]&&above_arr[i]<right_lost_flag)//
                       {
@@ -1135,5 +1184,4 @@ void roadjunction_dispose(void)
 
                                                                                                                                                  }
                                                                                                                                                 }
-
 

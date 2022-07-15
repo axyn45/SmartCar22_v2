@@ -80,7 +80,7 @@ extern int chekushibie;
 
 extern uint8 righthuandao_flag;
 extern uint8 rightstate;
-
+extern sint32 pulse;
 extern uint8 garage_delay;
 
 extern float B,A;

@@ -52,9 +52,9 @@ void OutInGarage (uint8 inout, uint8 lr)//  inout 为1 入库  lr为1  右
             // 2020年新加出库元素，此处为盲走出库
             ps = Feed_flag;
             DJ_PID(40);    // 直行大约10cm
-
-            ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);  //继续前进
-            ATOM_PWM_SetDuty(ATOMPWM4, 1500, 12500);
+//
+//            ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);  //继续前进
+//            ATOM_PWM_SetDuty(ATOMPWM4, 1500, 12500);
 
             MotorCtrl4w(1500,1500,1500,1500);//3000
             sprintf(txt, "start2", Feed_speed);
@@ -72,7 +72,7 @@ void OutInGarage (uint8 inout, uint8 lr)//  inout 为1 入库  lr为1  右
             sprintf(txt, "start3", Feed_speed);
             TFTSPI_P8X16Str(0, 6, txt,u16WHITE,u16BLACK);       //字符串显示
             ps = Feed_flag;
-            DJ_PID(75);     // 舵机向右打死为出库做准备
+            DJ_PID(70);     // 舵机向右打死为出库做准备
             /*
             ATOM_PWM_SetDuty(ATOMPWM5, 0, 12500);  //继续前进
             ATOM_PWM_SetDuty(ATOMPWM4, 1500, 12500);

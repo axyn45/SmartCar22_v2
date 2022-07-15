@@ -28,10 +28,10 @@ volatile char mutexCpu0TFTIsOk=0;
 void CAR_Drive_duty(void)           //执行机构综合控制函数
 {
 
-  DJ_PID(mid_point[40]);
-//  if(KEY_Read(DSW0))  ;              //
-//      //正常舵机控制
-//  else;
+
+  if(KEY_Read(DSW0))               //
+    DJ_PID(mid_point[50]);  //正常舵机控制
+  else;
 
   if(podao_flag)
       DJ_PID(mid_point[30]);
@@ -50,7 +50,30 @@ void CAR_Drive_duty(void)           //执行机构综合控制函数
 
 }
 
+void CAR_Drive_duty_2(int point)           //执行机构综合控制函数
+{
 
+
+  if(KEY_Read(DSW0))               //
+    DJ_PID(mid_point[point]);  //正常舵机控制
+  else;
+
+  if(podao_flag)
+      DJ_PID(mid_point[30]);
+
+  if(garage_flag)
+      DJ_PID(40);
+
+
+  /************速度控制**************/
+  if(0)
+  speed_need=speed_need_Boost;
+  else
+  speed_need=14;//speed_need_normal;       //上电时速度默认为0，按下key0后执行速度挡位选择函数  void speed_SW
+
+    speed_PID(speed_need);
+
+}
 
 
 
@@ -151,7 +174,7 @@ int core0_main (void)
 
               if(start_flag==0)//起跑标志位
                   {
-                              OutInGarage (0, 1);
+//                              OutInGarage (0, 1);
                               start_flag=1;
                               huandaoshibie++;    //开启环岛识别
                   }
@@ -169,9 +192,40 @@ int core0_main (void)
 
            //  for(uint8 i=59;i>0;i--)              //oled显示中线
            //  Pixle[i][(mid_point[i])]=0;
+               if(lefthuandao_flag)
+               {
+                  if(leftstate==4)
+                  {
+                      if(pulse>160)
+                      {
+//                          DJ_PID(15);
+                      ATOM_PWM_SetDuty(ATOMSERVO1, 1760, 100);
+                      MotorCtrl4w(1000,1000,1000,1000);
 
-                  CAR_Drive_duty();               //舵机控制与电机控制（转向与速度）
-                  GUI_Duty();                           //调试界面
+                      }
+                      else
+                      {
+                          CAR_Drive_duty_2(35);
+                      }
+                  }
+                  else{
+                      CAR_Drive_duty_2(35);
+                  }
+                  if(leftstate==5)
+                  {
+//                          ATOM_PWM_SetDuty(ATOMSERVO1, 1700, 100);
+                      CAR_Drive_duty_2(45);
+                  }
+                  if(leftstate==6)
+                  {
+                      CAR_Drive_duty_2(36);
+                  }
+
+               }
+               else{
+                  CAR_Drive_duty();      }         //舵机控制与电机控制（转向与速度）
+
+               GUI_Duty();                           //调试界面
 
 
                   if(garage_delay)

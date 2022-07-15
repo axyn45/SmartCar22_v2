@@ -1,5 +1,5 @@
 #include"debug.h"
-
+#include"Camera.h"
 
 char txt[16];                  //oled显示替换字符
 int start_flag=0;
@@ -75,21 +75,21 @@ void GUI_Duty(void)
 
 /*这里可以在oled上显示出各种标志位，方便调元素*/
 
-        sprintf(txt, "garage_flag:%d", garage_flag);
+        sprintf(txt, "lefthuandao_flag:%d", lefthuandao_flag);
         TFTSPI_P6X8Str(0, 10, txt,u16WHITE,u16BLUE);
 
 
-           sprintf(txt, "garage_count:%d",garage_count);
+           sprintf(txt, "leftstate:%d",leftstate);
            TFTSPI_P6X8Str(0, 11, txt,u16WHITE,u16BLUE);
 
 
-        sprintf(txt, "white_black:%d",white_black);
+        sprintf(txt, "pulse:%4d",pulse);
         TFTSPI_P6X8Str(0, 12, txt,u16WHITE,u16BLUE);
 
-              sprintf(txt, "black_white:%d",black_white);
+              sprintf(txt, "left_count:%d",left_count);
               TFTSPI_P6X8Str(0, 13, txt,u16WHITE,u16BLUE);
 
-       sprintf(txt, "garage_delay:%d",garage_delay);
+       sprintf(txt, "Right_huandao2:%d",Right_huandao2);
        TFTSPI_P6X8Str(0, 14, txt,u16WHITE,u16BLUE);
 
 
